@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SEED. | Stockage Premium de Phrases Secrètes pour Cryptomonnaies</title>
     <style>
+        <script src="https://js.stripe.com/v3/"></script>
         /* Reset and base styles */
         * {
             margin: 0;
@@ -864,6 +865,10 @@
     </div>
 
     <script>
+        
+    // Initialisation de Stripe avec ta clé publique
+    const stripe = Stripe('pk_live_51RKepCF5b7dGTJRmh0N682ZntmzOmicttddisrp5SXRPZxnXfMEds2PNlHWlRWJRqxWacCeUf2h7E1MoHjuvwjya00nMjONpWO');
+        
         // Constantes
         const BASE_PRICE = 29;
         
@@ -937,7 +942,43 @@
             quantityInput.value = value;
             updatePrice();
         });
+// Fonction pour rediriger vers Stripe Checkout
+async function redirectToCheckout(paymentMethod) {
+    const quantity = parseInt(quantityInput.value);
+    const totalPrice = quantity * BASE_PRICE;
 
+    try {
+        const response = await fetch('/create-checkout-session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                quantity: quantity,
+                totalPrice: totalPrice,
+                paymentMethod: paymentMethod,
+            }),
+        });
+
+        const session = await response.json();
+
+        const { error } = await stripe.redirectToCheckout({
+            sessionId: session.id,
+        });
+
+        if (error) {
+            alert(`Erreur : ${error.message}`);
+        }
+    } catch (error) {
+        alert(`Erreur lors de la création de la session de paiement : ${error.message}`);
+    }
+}
+
+// Remplace les gestionnaires de paiement actuels
+applePayButton.addEventListener('click', () => redirectToCheckout('apple_pay'));
+cryptoButton.addEventListener('click', () => redirectToCheckout('crypto'));
+paypalButton.addEventListener('click', () => redirectToCheckout('paypal'));
+cardButton.addEventListener('click', () => redirectToCheckout('card'));
         // Mettre à jour le prix lorsque l'utilisateur tape dans l'input
         quantityInput.addEventListener('input', updatePrice);
 
@@ -1046,21 +1087,9 @@
         });
 
         // Gestionnaires de boutons de paiement
-        function handlePayment(method) {
-            const quantity = parseInt(quantityInput.value);
-            const totalPrice = quantity * BASE_PRICE;
-            
-            // C'est ici que vous intégreriez avec le fournisseur de paiement
-            alert(`Lancement du paiement ${method} pour ${quantity} plaque(s) SEED. Total: ${totalPrice} EUR`);
-            
-            // Dans une implémentation réelle, vous redirigeriez vers le fournisseur de paiement ou ouvririez leur widget
-        }
 
-        applePayButton.addEventListener('click', () => handlePayment('Apple Pay'));
-        cryptoButton.addEventListener('click', () => handlePayment('Crypto'));
-        paypalButton.addEventListener('click', () => handlePayment('PayPal'));
-        cardButton.addEventListener('click', () => handlePayment('Carte Bancaire'));
     </script>
+    
 </body>
 </html>
 
