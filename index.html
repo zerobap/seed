@@ -641,7 +641,7 @@
             text-decoration: underline;
         }
 
-        /* Animation Matrix pour le prix (plus courte et discrète) */
+        /* Animation Matrix pour le prix (plus courte) */
         .matrix-effect {
             position: relative;
             display: inline-block;
@@ -654,7 +654,7 @@
             top: 0;
             left: 0;
             opacity: 0.5;
-            animation: matrixFall 0.3s linear forwards;
+            animation: matrixFall 0.15s linear forwards;
             overflow: hidden;
             white-space: nowrap;
         }
@@ -829,7 +829,7 @@
 
                 <div class="product-card">
                     <div class="price" id="price-display">
-                        <span id="price-value" class="matrix-effect" data-value="37,99">37,99</span> <span class="price-currency">EUR</span>
+                        <span id="price-value" class="matrix-effect" data-value="24,99">24,99</span> <span class="price-currency">EUR</span>
                     </div>
                     <div class="quantity-selector">
                         <span class="quantity-label">Quantité:</span>
@@ -901,7 +901,7 @@
         const stripe = Stripe('pk_live_51RKepCF5b7dGTJRmh0N682ZntmzOmicttddisrp5SXRPZxnXfMEds2PNlHWlRWJRqxWacCeUf2h7E1MoHjuvwjya00nMjONpWO');
 
         // Constantes
-        const BASE_PRICE = 37.99; // Prix déjà à 37,99 EUR
+        const BASE_PRICE = 24.99; // Prix mis à jour à 24,99 EUR
         
         // Éléments DOM
         const decreaseBtn = document.getElementById('decrease-quantity');
@@ -934,9 +934,9 @@
             const quantity = parseInt(quantityInput.value);
             const totalPrice = (quantity * BASE_PRICE).toFixed(2); // Utilisation de toFixed(2) pour garder 2 décimales
 
-            // Déclencher l'effet Matrix (plus court et discret)
-            const matrixEffectDuration = 300; // Réduit à 300 ms
-            const intervalDuration = 30; // Réduit à 30 ms pour un changement plus rapide
+            // Déclencher l'effet Matrix (encore plus court)
+            const matrixEffectDuration = 150; // Réduit à 150 ms
+            const intervalDuration = 15; // Réduit à 15 ms pour un changement plus rapide
             const steps = matrixEffectDuration / intervalDuration; // Nombre d'étapes
             let currentStep = 0;
 
