@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEED. | Stockage Premium de Phrases Secrètes pour Cryptomonnaies</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #000;
+            color: #fff;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header styles */
+        header {
+            padding: 40px 0 20px;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-top: 10px;
+            max-width: 600px;
+        }
+
+        /* Main content styles */
+        main {
+            padding: 20px 0 60px;
+            min-height: 70vh;
+        }
+
+        /* Product 3D showcase section */
+        .product-showcase {
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        /* 3D Product View - ENHANCED */
+        .product-3d-container {
+            width: 100%;
+            height: 500px; /* Increased height */
+            position: relative;
+            perspective: 1200px;
+            overflow: hidden;
+            border-radius: 12px;
+            background: radial-gradient(circle at center, #222, #111, #000); /* Enhanced background */
+            cursor: grab;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 255, 255, 0.05) inset;
+            margin-bottom: 40px;
+        }
+
+        .product-3d-container:active {
+            cursor: grabbing;
+        }
+
+        .product-3d {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(20deg) rotateY(0deg);
+            transition: transform 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .steel-plate {
+            width: 300px; /* Doubled size from 150px */
+            height: 180px; /* Doubled size from 90px */
+            position: absolute;
+            transform-style: preserve-3d;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
+        }
+
+        .plate-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: visible;
+            border-radius: 4px;
+        }
+
+        .plate-front {
+            transform: translateZ(2px); /* Increased depth */
+            background: linear-gradient(135deg, #888, #666, #777);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            color: #eee;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            border: 1px solid #999;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .plate-back {
+            transform: translateZ(-2px) rotateY(180deg);
+            background: linear-gradient(135deg, #777, #555, #666);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            font-size: 16px;
+            color: #ddd;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            border: 1px solid #888;
+        }
+
+        .plate-edge {
+            position: absolute;
+            background: #555;
+            border: 1px solid #666;
+        }
+
+        .plate-top {
+            width: 100%;
+            height: 4px;
+            top: -2px;
+            transform: rotateX(90deg) translateZ(2px);
+        }
+
+        .plate-bottom {
+            width: 100%;
+            height: 4px;
+            bottom: -2px;
+            transform: rotateX(-90deg) translateZ(2px);
+        }
+
+        .plate-left {
+            width: 4px;
+            height: 100%;
+            left: -2px;
+            transform: rotateY(-90deg) translateZ(2px);
+        }
+
+        .plate-right {
+            width: 4px;
+            height: 100%;
+            right: -2px;
+            transform: rotateY(90deg) translateZ(2px);
+        }
+
+        .seed-logo {
+            font-weight: bold;
+            font-size: 28px; /* Increased size */
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .seed-tagline {
+            font-size: 12px; /* Increased size */
+            opacity: 0.9;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .seed-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            width: 90%;
+            margin-top: 10px;
+        }
+
+        .seed-word {
+            font-size: 10px; /* Increased size */
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4px;
+            border-radius: 2px;
+            text-align: center;
+        }
+
+        /* Spotlight effect */
+        .spotlight {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(
+                circle at var(--x, 50%) var(--y, 50%), 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0) 50%
+            );
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .product-3d-instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .product-3d-container:hover .product-3d-instructions {
+            opacity: 0.4;
+        }
+
+        /* Product info and purchase section */
+        .product-section {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            width: 100%;
+        }
+
+        .product-info {
+            max-width: 600px;
+        }
+
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            flex: 1 1 200px;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #fff;
+            margin-right: 10px;
+        }
+
+        .feature-description {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        /* Product card styles */
+        .product-card {
+            background-color: #111;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid #222;
+            margin: 0 auto;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .price-currency {
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-left: 5px;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .quantity-label {
+            margin-right: 15px;
+            font-size: 1rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 1px solid #333;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background-color: #222;
+        }
+
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            background: none;
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
+        }
+
+        .quantity-input:focus {
+            outline: none;
+        }
+
+        /* Payment buttons */
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .payment-primary {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .payment-button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .apple-pay-button {
+            background-color: #000;
+            color: #fff;
+            border: 1px solid #fff;
+        }
+
+        .apple-pay-button:hover {
+            background-color: #111;
+        }
+
+        .crypto-button {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .crypto-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .payment-secondary {
+            display: flex;
+            gap: 10px;
+        }
+
+        .paypal-button {
+            background-color: #0070ba;
+            color: #fff;
+        }
+
+        .paypal-button:hover {
+            background-color: #005ea6;
+        }
+
+        .card-button {
+            background-color: #444;
+            color: #fff;
+        }
+
+        .card-button:hover {
+            background-color: #555;
+        }
+
+        .payment-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .payment-divider {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .payment-divider::before,
+        .payment-divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #333;
+        }
+
+        .payment-divider::before {
+            margin-right: 10px;
+        }
+
+        .payment-divider::after {
+            margin-left: 10px;
+        }
+
+        /* Footer styles */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid #222;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+        }
+
+        /* Price animation */
+        @keyframes priceUpdate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .price-update {
+            animation: priceUpdate 0.3s ease;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+            }
+
+            .product-3d-container {
+                height: 400px;
+            }
+
+            .steel-plate {
+                width: 240px;
+                height: 144px;
+            }
+
+            .product-section {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .product-card {
+                padding: 30px;
+                width: 100%;
+            }
+
+            .payment-primary,
+            .payment-secondary {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .product-section {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            .product-info {
+                flex: 1;
+            }
+
+            .product-card {
+                flex: 0 0 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="logo">SEED.</h1>
+            <p class="tagline">Sécurisez votre avenir crypto avec un stockage de phrases secrètes en acier inoxydable de qualité militaire.</p>
+        </header>
+
+        <main>
+            <!-- Dedicated showcase for the 3D product -->
+            <section class="product-showcase">
+                <div class="product-3d-container" id="product3dContainer">
+                    <div class="product-3d" id="product3d">
+                        <div class="steel-plate" id="steelPlate">
+                            <div class="plate-face plate-front">
+                                <div class="seed-logo">SEED.</div>
+                                <div class="seed-tagline">SÉCURISÉ • ÉTERNEL • DURABLE • RÉSISTANT</div>
+                                <div class="seed-grid">
+                                    <div class="seed-word">abandon</div>
+                                    <div class="seed-word">ability</div>
+                                    <div class="seed-word">able</div>
+                                    <div class="seed-word">about</div>
+                                    <div class="seed-word">above</div>
+                                    <div class="seed-word">absent</div>
+                                    <div class="seed-word">absorb</div>
+                                    <div class="seed-word">abstract</div>
+                                    <div class="seed-word">absurd</div>
+                                    <div class="seed-word">abuse</div>
+                                    <div class="seed-word">access</div>
+                                    <div class="seed-word">accident</div>
+                                </div>
+                            </div>
+                            <div class="plate-face plate-back">
+                                <div>PHRASE SECRÈTE BIP39</div>
+                                <div style="margin-top: 10px; font-size: 14px;">ACIER INOXYDABLE 316L</div>
+                                <div style="margin-top: 30px; font-size: 12px;">5cm × 3cm × 2mm</div>
+                            </div>
+                            <div class="plate-edge plate-top"></div>
+                            <div class="plate-edge plate-bottom"></div>
+                            <div class="plate-edge plate-left"></div>
+                            <div class="plate-edge plate-right"></div>
+                        </div>
+                    </div>
+                    <div class="spotlight" id="spotlight"></div>
+                    <div class="product-3d-instructions">
+                        Cliquez et faites glisser pour faire pivoter
+                    </div>
+                </div>
+            </section>
+
+            <div class="product-section">
+                <div class="product-info">
+                    <h2 class="product-title">Stockage Premium de Phrases Secrètes en Acier Inoxydable</h2>
+                    <p class="product-description">
+                        Les plaques SEED sont conçues en acier inoxydable 316L premium pour protéger de façon permanente vos phrases secrètes de cryptomonnaie contre le feu, l'eau et le temps. Notre méthode de gravure propriétaire garantit que vos clés restent lisibles et sécurisées pour les générations futures.
+                    </p>
+                    <div class="features">
+                        <div class="feature">
+                            <h3 class="feature-title">Résistant au feu</h3>
+                            <p class="feature-description">Supporte des températures jusqu'à 1400°C (2550°F)</p>
+                        </div>
+                        <div class="feature">
+                            <h3 class="feature-title">Étanche</h3>
+                            <p class="feature-description">Résistant à la corrosion dans tous les environnements</p>
+                        </div>
+                        <div class="feature">
+                            <h3 class="feature-title">Inviolable</h3>
+                            <p class="feature-description">Le sceau de sécurité révèle tout accès non autorisé</p>
+                        </div>
+                        <div class="feature">
+                            <h3 class="feature-title">Pérenne</h3>
+                            <p class="feature-description">Conçu pour durer des siècles</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="price" id="price-display">
+                        <span id="price-value">29</span> <span class="price-currency">EUR</span>
+                    </div>
+                    <div class="quantity-selector">
+                        <span class="quantity-label">Quantité:</span>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" id="decrease-quantity">-</button>
+                            <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
+                            <button class="quantity-btn" id="increase-quantity">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-options">
+                        <!-- Primary payment methods -->
+                        <div class="payment-primary">
+                            <button class="payment-button apple-pay-button" id="apple-pay-button">
+                                <svg class="payment-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 7c-3 0-4 3-4 5.5 0 3 2 7.5 4 7.5 1.088-.046 1.679-.5 3-.5 1.312 0 1.5.5 3 .5s4-3 4-5c-.028-.01-2.472-.403-2.5-3-.019-2.17 2.416-2.954 2.5-3-1.023-1.492-2.951-1.963-3.5-2-1.433-.111-2.83 1-3.5 1-.68 0-1.9-1-3-1z"/>
+                                    <path d="M12 4a2 2 0 0 0 2-2c0 1.1-.9 2-2 2z"/>
+                                </svg>
+                                Apple Pay
+                            </button>
+                            <button class="payment-button crypto-button" id="crypto-payment-button">
+                                <svg class="payment-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                                    <path d="M12 6v12"/>
+                                    <path d="M8 12h8"/>
+                                </svg>
+                                Payer en Crypto
+                            </button>
+                        </div>
+                        
+                        <div class="payment-divider">ou payer avec</div>
+                        
+                        <!-- Secondary payment methods -->
+                        <div class="payment-secondary">
+                            <button class="payment-button paypal-button" id="paypal-button">
+                                <svg class="payment-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M7.144 19.532l1.049-5.751c.11-.606.691-1.002 1.304-.948 2.155.192 6.877.1 8.818-4.002 2.554-5.397-.59-7.769-6.295-7.769H7.43a1.97 1.97 0 0 0-1.944 1.655L2.77 19.507a.857.857 0 0 0 .846.994h2.368a1.18 1.18 0 0 0 1.161-.969zM7.967 22.522a.74.74 0 0 0 .666.479h2.313c.623 0 1.158-.418 1.296-1.033l.1-.515.191-1.049.057-.31c.138-.615.673-1.033 1.296-1.033h.819c5.281 0 9.416-2.183 10.63-8.493.517-2.677.254-4.858-.904-6.401"/>
+                                </svg>
+                                PayPal
+                            </button>
+                            <button class="payment-button card-button" id="card-button">
+                                <svg class="payment-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                    <line x1="2" y1="10" x2="22" y2="10"/>
+                                </svg>
+                                Carte Bancaire
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="copyright">© 2024 SEED. Tous droits réservés.</div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Confidentialité</a>
+                    <a href="#" class="footer-link">Conditions</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Constantes
+        const BASE_PRICE = 29;
+        
+        // Éléments DOM
+        const decreaseBtn = document.getElementById('decrease-quantity');
+        const increaseBtn = document.getElementById('increase-quantity');
+        const quantityInput = document.getElementById('quantity');
+        const priceDisplay = document.getElementById('price-display');
+        const priceValue = document.getElementById('price-value');
+        
+        // Boutons de paiement
+        const applePayButton = document.getElementById('apple-pay-button');
+        const cryptoButton = document.getElementById('crypto-payment-button');
+        const paypalButton = document.getElementById('paypal-button');
+        const cardButton = document.getElementById('card-button');
+
+        // Contrôles de rotation 3D
+        const product3dContainer = document.getElementById('product3dContainer');
+        const product3d = document.getElementById('product3d');
+        const steelPlate = document.getElementById('steelPlate');
+        const spotlight = document.getElementById('spotlight');
+        
+        // Variables pour la rotation 3D
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let rotationX = 20;
+        let rotationY = 0;
+        
+        // Mise à jour du prix en fonction de la quantité
+        function updatePrice() {
+            const quantity = parseInt(quantityInput.value);
+            const totalPrice = quantity * BASE_PRICE;
+            
+            // Ajouter la classe d'animation
+            priceDisplay.classList.add('price-update');
+            
+            // Mettre à jour la valeur du prix
+            priceValue.textContent = totalPrice;
+            
+            // Supprimer la classe d'animation après la fin de l'animation
+            setTimeout(() => {
+                priceDisplay.classList.remove('price-update');
+            }, 300);
+        }
+
+        // Contrôles de quantité
+        decreaseBtn.addEventListener('click', () => {
+            const currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+                updatePrice();
+            }
+        });
+
+        increaseBtn.addEventListener('click', () => {
+            const currentValue = parseInt(quantityInput.value);
+            if (currentValue < 10) {
+                quantityInput.value = currentValue + 1;
+                updatePrice();
+            }
+        });
+
+        quantityInput.addEventListener('change', () => {
+            let value = parseInt(quantityInput.value);
+            if (isNaN(value) || value < 1) {
+                value = 1;
+            } else if (value > 10) {
+                value = 10;
+            }
+            quantityInput.value = value;
+            updatePrice();
+        });
+
+        // Mettre à jour le prix lorsque l'utilisateur tape dans l'input
+        quantityInput.addEventListener('input', updatePrice);
+
+        // Fonctions de rotation 3D avec la souris
+        function updatePlateRotation() {
+            product3d.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+        }
+
+        // Effet de spotlight qui suit la souris
+        product3dContainer.addEventListener('mousemove', (e) => {
+            const rect = product3dContainer.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
+            spotlight.style.setProperty('--x', `${x}%`);
+            spotlight.style.setProperty('--y', `${y}%`);
+        });
+
+        product3dContainer.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            previousMousePosition = {
+                x: e.clientX,
+                y: e.clientY
+            };
+            product3dContainer.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const deltaMove = {
+                x: e.clientX - previousMousePosition.x,
+                y: e.clientY - previousMousePosition.y
+            };
+            
+            // Ajuster la sensibilité de la rotation
+            rotationY += deltaMove.x * 0.5;
+            rotationX -= deltaMove.y * 0.5;
+            
+            // Limiter la rotation en X pour éviter des angles étranges
+            rotationX = Math.max(-60, Math.min(60, rotationX));
+            
+            updatePlateRotation();
+            
+            previousMousePosition = {
+                x: e.clientX,
+                y: e.clientY
+            };
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            product3dContainer.style.cursor = 'grab';
+        });
+
+        // Support tactile pour les appareils mobiles
+        product3dContainer.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            previousMousePosition = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
+            e.preventDefault();
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            
+            const deltaMove = {
+                x: e.touches[0].clientX - previousMousePosition.x,
+                y: e.touches[0].clientY - previousMousePosition.y
+            };
+            
+            rotationY += deltaMove.x * 0.5;
+            rotationX -= deltaMove.y * 0.5;
+            
+            rotationX = Math.max(-60, Math.min(60, rotationX));
+            
+            updatePlateRotation();
+            
+            previousMousePosition = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
+            
+            e.preventDefault();
+        });
+
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        // Animation subtile de la plaque au chargement
+        let autoRotate = setInterval(() => {
+            rotationY += 0.2;
+            updatePlateRotation();
+        }, 30);
+
+        // Arrêter la rotation automatique lorsque l'utilisateur interagit
+        product3dContainer.addEventListener('mouseenter', () => {
+            clearInterval(autoRotate);
+        });
+
+        // Gestionnaires de boutons de paiement
+        function handlePayment(method) {
+            const quantity = parseInt(quantityInput.value);
+            const totalPrice = quantity * BASE_PRICE;
+            
+            // C'est ici que vous intégreriez avec le fournisseur de paiement
+            alert(`Lancement du paiement ${method} pour ${quantity} plaque(s) SEED. Total: ${totalPrice} EUR`);
+            
+            // Dans une implémentation réelle, vous redirigeriez vers le fournisseur de paiement ou ouvririez leur widget
+        }
+
+        applePayButton.addEventListener('click', () => handlePayment('Apple Pay'));
+        cryptoButton.addEventListener('click', () => handlePayment('Crypto'));
+        paypalButton.addEventListener('click', () => handlePayment('PayPal'));
+        cardButton.addEventListener('click', () => handlePayment('Carte Bancaire'));
+    </script>
+</body>
+</html>
