@@ -440,7 +440,7 @@
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            transition: all 0.3s ease;
+            position: relative;
         }
 
         .price-currency {
@@ -641,6 +641,42 @@
             text-decoration: underline;
         }
 
+        /* Animation Matrix pour le prix */
+        .matrix-effect {
+            position: relative;
+            display: inline-block;
+            color: #0f0; /* Vert Matrix */
+            font-family: monospace;
+            text-shadow: 0 0 5px #0f0, 0 0 10px #0f0;
+        }
+
+        .matrix-effect::before {
+            content: attr(data-value);
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #0f0;
+            opacity: 0.7;
+            animation: matrixFall 1s linear forwards;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        @keyframes matrixFall {
+            0% {
+                opacity: 0.7;
+                transform: translateY(-20px);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
         /* Responsive styles */
         @media (max-width: 768px) {
             .logo {
@@ -796,7 +832,7 @@
 
                 <div class="product-card">
                     <div class="price" id="price-display">
-                        <span id="price-value">37,99</span> <span class="price-currency">EUR</span>
+                        <span id="price-value" class="matrix-effect" data-value="37,99">37,99</span> <span class="price-currency">EUR</span>
                     </div>
                     <div class="quantity-selector">
                         <span class="quantity-label">Quantité:</span>
@@ -868,7 +904,7 @@
         const stripe = Stripe('pk_live_51RKepCF5b7dGTJRmh0N682ZntmzOmicttddisrp5SXRPZxnXfMEds2PNlHWlRWJRqxWacCeUf2h7E1MoHjuvwjya00nMjONpWO');
 
         // Constantes
-        const BASE_PRICE = 37.99; // Prix mis à jour à 37,99 EUR
+        const BASE_PRICE = 37.99; // Prix déjà à 37,99 EUR
         
         // Éléments DOM
         const decreaseBtn = document.getElementById('decrease-quantity');
@@ -896,13 +932,38 @@
         let rotationX = 20;
         let rotationY = 0;
         
-        // Mise à jour du prix en fonction de la quantité
+        // Mise à jour du prix en fonction de la quantité avec animation Matrix
         function updatePrice() {
             const quantity = parseInt(quantityInput.value);
             const totalPrice = (quantity * BASE_PRICE).toFixed(2); // Utilisation de toFixed(2) pour garder 2 décimales
-            
-            // Mettre à jour la valeur du prix sans animation
-            priceValue.textContent = totalPrice;
+
+            // Déclencher l'effet Matrix
+            const matrixEffectDuration = 1000; // Durée de l'animation en millisecondes (1 seconde)
+            const intervalDuration = 50; // Intervalle de changement des chiffres (toutes les 50ms)
+            const steps = matrixEffectDuration / intervalDuration; // Nombre d'étapes
+            let currentStep = 0;
+
+            // Fonction pour générer un nombre aléatoire avec le même format que le prix
+            function getRandomPrice() {
+                return (Math.random() * 100).toFixed(2).replace('.', ',');
+            }
+
+            // Simuler l'effet Matrix avec des chiffres aléatoires
+            const matrixInterval = setInterval(() => {
+                if (currentStep < steps - 1) {
+                    priceValue.textContent = getRandomPrice();
+                    currentStep++;
+                } else {
+                    // À la fin, afficher le prix final
+                    clearInterval(matrixInterval);
+                    priceValue.textContent = totalPrice;
+                    priceValue.style.color = '#fff'; // Revenir à la couleur blanche après l'animation
+                }
+            }, intervalDuration);
+
+            // Mettre à jour l'attribut data-value pour l'animation CSS
+            priceValue.setAttribute('data-value', totalPrice);
+            priceValue.style.color = '#0f0'; // Vert Matrix pendant l'animation
         }
 
         // Contrôles de quantité
