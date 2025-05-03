@@ -57,15 +57,15 @@
             position: relative;
         }
 
-        /* 3D Product View - ENHANCED */
+        /* 3D Product View - ENHANCED REALISTIC */
         .product-3d-container {
             width: 100%;
-            height: 500px; /* Increased height */
+            height: 500px;
             position: relative;
             perspective: 1200px;
             overflow: hidden;
             border-radius: 12px;
-            background: radial-gradient(circle at center, #222, #111, #000); /* Enhanced background */
+            background: radial-gradient(circle at center, #111, #080808, #000);
             cursor: grab;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 255, 255, 0.05) inset;
             margin-bottom: 40px;
@@ -87,9 +87,10 @@
             justify-content: center;
         }
 
+        /* Steel plate - Credit card dimensions */
         .steel-plate {
-            width: 300px; /* Doubled size from 150px */
-            height: 180px; /* Doubled size from 90px */
+            width: 256px; /* ~3x credit card width (85.60mm) */
+            height: 162px; /* ~3x credit card height (53.98mm) */
             position: absolute;
             transform-style: preserve-3d;
             filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
@@ -99,104 +100,221 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            backface-visibility: visible;
-            border-radius: 4px;
+            backface-visibility: hidden; /* Make sure faces are completely opaque */
+            border-radius: 8px;
         }
 
+        /* Brushed stainless steel effect - darker and more elegant */
         .plate-front {
-            transform: translateZ(2px); /* Increased depth */
-            background: linear-gradient(135deg, #888, #666, #777);
+            transform: translateZ(1px);
+            background: linear-gradient(135deg, 
+                rgba(100, 100, 100, 0.9), 
+                rgba(140, 140, 140, 1), 
+                rgba(120, 120, 120, 0.95));
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            text-align: center;
-            color: #eee;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            border: 1px solid #999;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            color: #222;
+            border: 1px solid rgba(180, 180, 180, 0.5);
+            box-shadow: 
+                0 0 15px rgba(0, 0, 0, 0.3),
+                inset 0 0 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        /* Brushed metal texture - more pronounced */
+        .plate-front::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.05),
+                    rgba(255, 255, 255, 0.1) 1px,
+                    rgba(255, 255, 255, 0.05) 1px,
+                    rgba(255, 255, 255, 0.07) 2px
+                );
+            opacity: 0.8;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Enhanced reflection effect */
+        .plate-front::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            right: -100%;
+            bottom: -100%;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.05) 45%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.05) 55%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(45deg);
+            animation: reflectionMove 10s infinite linear;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        @keyframes reflectionMove {
+            0% { transform: rotate(45deg) translateY(-50%); }
+            50% { transform: rotate(45deg) translateY(50%); }
+            100% { transform: rotate(45deg) translateY(-50%); }
         }
 
         .plate-back {
-            transform: translateZ(-2px) rotateY(180deg);
-            background: linear-gradient(135deg, #777, #555, #666);
+            transform: translateZ(-1px) rotateY(180deg);
+            background: linear-gradient(135deg, 
+                rgba(90, 90, 90, 0.9), 
+                rgba(130, 130, 130, 1), 
+                rgba(110, 110, 110, 0.95));
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 16px;
-            font-size: 16px;
-            color: #ddd;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            border: 1px solid #888;
+            padding: 15px;
+            color: #222;
+            border: 1px solid rgba(180, 180, 180, 0.5);
+            box-shadow: 
+                0 0 15px rgba(0, 0, 0, 0.3),
+                inset 0 0 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        /* Brushed metal texture for back - more pronounced */
+        .plate-back::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.05),
+                    rgba(255, 255, 255, 0.1) 1px,
+                    rgba(255, 255, 255, 0.05) 1px,
+                    rgba(255, 255, 255, 0.07) 2px
+                );
+            opacity: 0.8;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Enhanced reflection effect for back */
+        .plate-back::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            right: -100%;
+            bottom: -100%;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.05) 45%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.05) 55%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(45deg);
+            animation: reflectionMove 10s infinite linear;
+            z-index: 2;
+            pointer-events: none;
         }
 
         .plate-edge {
             position: absolute;
-            background: #555;
-            border: 1px solid #666;
+            background: #777;
+            border: 1px solid #888;
         }
 
         .plate-top {
             width: 100%;
-            height: 4px;
-            top: -2px;
-            transform: rotateX(90deg) translateZ(2px);
+            height: 2px;
+            top: -1px;
+            transform: rotateX(90deg) translateZ(1px);
         }
 
         .plate-bottom {
             width: 100%;
-            height: 4px;
-            bottom: -2px;
-            transform: rotateX(-90deg) translateZ(2px);
+            height: 2px;
+            bottom: -1px;
+            transform: rotateX(-90deg) translateZ(1px);
         }
 
         .plate-left {
-            width: 4px;
+            width: 2px;
             height: 100%;
-            left: -2px;
-            transform: rotateY(-90deg) translateZ(2px);
+            left: -1px;
+            transform: rotateY(-90deg) translateZ(1px);
         }
 
         .plate-right {
-            width: 4px;
+            width: 2px;
             height: 100%;
-            right: -2px;
-            transform: rotateY(90deg) translateZ(2px);
+            right: -1px;
+            transform: rotateY(90deg) translateZ(1px);
         }
 
-        .seed-logo {
-            font-weight: bold;
-            font-size: 28px; /* Increased size */
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-        }
-
-        .seed-tagline {
-            font-size: 12px; /* Increased size */
-            opacity: 0.9;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
+        /* Seed phrase grid - Two columns with enhanced visibility */
         .seed-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
             width: 90%;
-            margin-top: 10px;
+            position: relative;
+            z-index: 3;
         }
 
-        .seed-word {
-            font-size: 10px; /* Increased size */
-            background: rgba(0, 0, 0, 0.2);
-            padding: 4px;
-            border-radius: 2px;
-            text-align: center;
+        /* Numbered cells for seed words - more visible */
+        .seed-cell {
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            border-radius: 3px;
+            padding: 5px 5px 5px 20px;
+            font-size: 10px;
+            color: #222;
+            position: relative;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
         }
 
-        /* Spotlight effect */
+        .seed-cell::before {
+            content: attr(data-number);
+            position: absolute;
+            left: 5px;
+            font-weight: bold;
+            font-size: 9px;
+            color: #000;
+        }
+
+        /* SEED logo for back - only element on back */
+        .seed-logo-back {
+            font-weight: bold;
+            font-size: 40px;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 3;
+            color: #222;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Enhanced spotlight effect */
         .spotlight {
             position: absolute;
             width: 100%;
@@ -205,11 +323,29 @@
             left: 0;
             background: radial-gradient(
                 circle at var(--x, 50%) var(--y, 50%), 
-                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.15) 0%, 
                 rgba(255, 255, 255, 0) 50%
             );
             pointer-events: none;
             z-index: 10;
+            mix-blend-mode: overlay;
+        }
+
+        /* Secondary spotlight for more realistic lighting */
+        .spotlight-secondary {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(
+                ellipse at var(--x, 30%) var(--y, 30%), 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0) 60%
+            );
+            pointer-events: none;
+            z-index: 9;
+            mix-blend-mode: screen;
         }
 
         .product-3d-instructions {
@@ -521,8 +657,18 @@
             }
 
             .steel-plate {
-                width: 240px;
-                height: 144px;
+                width: 200px;
+                height: 126px;
+            }
+
+            .seed-cell {
+                font-size: 8px;
+                height: 16px;
+                padding: 4px 4px 4px 16px;
+            }
+
+            .seed-cell::before {
+                font-size: 7px;
             }
 
             .product-section {
@@ -578,27 +724,35 @@
                     <div class="product-3d" id="product3d">
                         <div class="steel-plate" id="steelPlate">
                             <div class="plate-face plate-front">
-                                <div class="seed-logo">SEED.</div>
-                                <div class="seed-tagline">SÉCURISÉ • ÉTERNEL • DURABLE • RÉSISTANT</div>
                                 <div class="seed-grid">
-                                    <div class="seed-word">abandon</div>
-                                    <div class="seed-word">ability</div>
-                                    <div class="seed-word">able</div>
-                                    <div class="seed-word">about</div>
-                                    <div class="seed-word">above</div>
-                                    <div class="seed-word">absent</div>
-                                    <div class="seed-word">absorb</div>
-                                    <div class="seed-word">abstract</div>
-                                    <div class="seed-word">absurd</div>
-                                    <div class="seed-word">abuse</div>
-                                    <div class="seed-word">access</div>
-                                    <div class="seed-word">accident</div>
+                                    <div class="seed-cell" data-number="1"></div>
+                                    <div class="seed-cell" data-number="13"></div>
+                                    <div class="seed-cell" data-number="2"></div>
+                                    <div class="seed-cell" data-number="14"></div>
+                                    <div class="seed-cell" data-number="3"></div>
+                                    <div class="seed-cell" data-number="15"></div>
+                                    <div class="seed-cell" data-number="4"></div>
+                                    <div class="seed-cell" data-number="16"></div>
+                                    <div class="seed-cell" data-number="5"></div>
+                                    <div class="seed-cell" data-number="17"></div>
+                                    <div class="seed-cell" data-number="6"></div>
+                                    <div class="seed-cell" data-number="18"></div>
+                                    <div class="seed-cell" data-number="7"></div>
+                                    <div class="seed-cell" data-number="19"></div>
+                                    <div class="seed-cell" data-number="8"></div>
+                                    <div class="seed-cell" data-number="20"></div>
+                                    <div class="seed-cell" data-number="9"></div>
+                                    <div class="seed-cell" data-number="21"></div>
+                                    <div class="seed-cell" data-number="10"></div>
+                                    <div class="seed-cell" data-number="22"></div>
+                                    <div class="seed-cell" data-number="11"></div>
+                                    <div class="seed-cell" data-number="23"></div>
+                                    <div class="seed-cell" data-number="12"></div>
+                                    <div class="seed-cell" data-number="24"></div>
                                 </div>
                             </div>
                             <div class="plate-face plate-back">
-                                <div>PHRASE SECRÈTE BIP39</div>
-                                <div style="margin-top: 10px; font-size: 14px;">ACIER INOXYDABLE 316L</div>
-                                <div style="margin-top: 30px; font-size: 12px;">5cm × 3cm × 2mm</div>
+                                <div class="seed-logo-back">SEED.</div>
                             </div>
                             <div class="plate-edge plate-top"></div>
                             <div class="plate-edge plate-bottom"></div>
@@ -607,6 +761,7 @@
                         </div>
                     </div>
                     <div class="spotlight" id="spotlight"></div>
+                    <div class="spotlight-secondary" id="spotlightSecondary"></div>
                     <div class="product-3d-instructions">
                         Cliquez et faites glisser pour faire pivoter
                     </div>
@@ -617,7 +772,7 @@
                 <div class="product-info">
                     <h2 class="product-title">Stockage Premium de Phrases Secrètes en Acier Inoxydable</h2>
                     <p class="product-description">
-                        Les plaques SEED sont conçues en acier inoxydable 316L premium pour protéger de façon permanente vos phrases secrètes de cryptomonnaie contre le feu, l'eau et le temps. Notre méthode de gravure propriétaire garantit que vos clés restent lisibles et sécurisées pour les générations futures.
+                        Les plaques SEED sont conçues en acier inoxydable 316L premium pour protéger de façon permanente vos phrases secrètes de cryptomonnaie contre le feu, l'eau et le temps. Notre méthode de gravure laser de précision garantit que vos clés restent lisibles et sécurisées pour les générations futures.
                     </p>
                     <div class="features">
                         <div class="feature">
@@ -699,9 +854,10 @@
             <div class="footer-content">
                 <div class="copyright">© 2024 SEED. Tous droits réservés.</div>
                 <div class="footer-links">
-                    <a href="#" class="footer-link">Confidentialité</a>
-                    <a href="#" class="footer-link">Conditions</a>
-                    <a href="#" class="footer-link">Contact</a>
+                    <a href="index.html" class="footer-link">Accueil</a>
+                    <a href="confidentialite.html" class="footer-link">Confidentialité</a>
+                    <a href="conditions.html" class="footer-link">Conditions</a>
+                    <a href="contact.html" class="footer-link">Contact</a>
                 </div>
             </div>
         </footer>
@@ -729,6 +885,7 @@
         const product3d = document.getElementById('product3d');
         const steelPlate = document.getElementById('steelPlate');
         const spotlight = document.getElementById('spotlight');
+        const spotlightSecondary = document.getElementById('spotlightSecondary');
         
         // Variables pour la rotation 3D
         let isDragging = false;
@@ -797,6 +954,10 @@
             
             spotlight.style.setProperty('--x', `${x}%`);
             spotlight.style.setProperty('--y', `${y}%`);
+            
+            // Secondary spotlight with offset for more realistic lighting
+            spotlightSecondary.style.setProperty('--x', `${x - 10}%`);
+            spotlightSecondary.style.setProperty('--y', `${y - 10}%`);
         });
 
         product3dContainer.addEventListener('mousedown', (e) => {
