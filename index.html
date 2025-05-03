@@ -641,13 +641,11 @@
             text-decoration: underline;
         }
 
-        /* Animation Matrix pour le prix */
+        /* Animation Matrix pour le prix (plus courte et discrète) */
         .matrix-effect {
             position: relative;
             display: inline-block;
-            color: #0f0; /* Vert Matrix */
             font-family: monospace;
-            text-shadow: 0 0 5px #0f0, 0 0 10px #0f0;
         }
 
         .matrix-effect::before {
@@ -655,25 +653,24 @@
             position: absolute;
             top: 0;
             left: 0;
-            color: #0f0;
-            opacity: 0.7;
-            animation: matrixFall 1s linear forwards;
+            opacity: 0.5;
+            animation: matrixFall 0.3s linear forwards;
             overflow: hidden;
             white-space: nowrap;
         }
 
         @keyframes matrixFall {
             0% {
-                opacity: 0.7;
-                transform: translateY(-20px);
+                opacity: 0.5;
+                transform: translateY(-5px);
             }
             50% {
-                opacity: 1;
+                opacity: 0.8;
                 transform: translateY(0);
             }
             100% {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(5px);
             }
         }
 
@@ -937,9 +934,9 @@
             const quantity = parseInt(quantityInput.value);
             const totalPrice = (quantity * BASE_PRICE).toFixed(2); // Utilisation de toFixed(2) pour garder 2 décimales
 
-            // Déclencher l'effet Matrix
-            const matrixEffectDuration = 1000; // Durée de l'animation en millisecondes (1 seconde)
-            const intervalDuration = 50; // Intervalle de changement des chiffres (toutes les 50ms)
+            // Déclencher l'effet Matrix (plus court et discret)
+            const matrixEffectDuration = 300; // Réduit à 300 ms
+            const intervalDuration = 30; // Réduit à 30 ms pour un changement plus rapide
             const steps = matrixEffectDuration / intervalDuration; // Nombre d'étapes
             let currentStep = 0;
 
@@ -957,13 +954,11 @@
                     // À la fin, afficher le prix final
                     clearInterval(matrixInterval);
                     priceValue.textContent = totalPrice;
-                    priceValue.style.color = '#fff'; // Revenir à la couleur blanche après l'animation
                 }
             }, intervalDuration);
 
             // Mettre à jour l'attribut data-value pour l'animation CSS
             priceValue.setAttribute('data-value', totalPrice);
-            priceValue.style.color = '#0f0'; // Vert Matrix pendant l'animation
         }
 
         // Contrôles de quantité
