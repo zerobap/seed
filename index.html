@@ -867,6 +867,8 @@
                 <div class="footer-links">
                     <a href="index.html" class="footer-link">Accueil</a>
                     <a href="confidentialite.html" class="footer-link privacy-link">Confidentialité</a>
+                    <a href="conditions.html" class="footer-link">Conditions</a>
+                    <a href="contact.html" class="footer-link">Contact</a>
                 </div>
             </div>
         </footer>
@@ -959,7 +961,7 @@
             const totalPrice = quantity * BASE_PRICE;
 
             try {
-                const response = await fetch('/create-checkout-session', {
+                const response = await fetch('https://us-central1-seed-backend.cloudfunctions.net/createCheckoutSession', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
