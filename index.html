@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SEED. | Stockage Premium de Phrases Secrètes pour Cryptomonnaies</title>
     <style>
-        <script src="https://js.stripe.com/v3/"></script>
         /* Reset and base styles */
         * {
             margin: 0;
@@ -632,6 +631,16 @@
             opacity: 1;
         }
 
+        /* Style pour le lien Confidentialité */
+        .footer-link.privacy-link {
+            opacity: 1;
+            font-weight: 500;
+        }
+        .footer-link.privacy-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
         /* Price animation */
         @keyframes priceUpdate {
             0% { transform: scale(1); }
@@ -710,6 +719,7 @@
             }
         }
     </style>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
     <div class="container">
@@ -856,19 +866,16 @@
                 <div class="copyright">© 2024 SEED. Tous droits réservés.</div>
                 <div class="footer-links">
                     <a href="index.html" class="footer-link">Accueil</a>
-                    <a href="confidentialite.html" class="footer-link">Confidentialité</a>
-                    <a href="conditions.html" class="footer-link">Conditions</a>
-                    <a href="contact.html" class="footer-link">Contact</a>
+                    <a href="confidentialite.html" class="footer-link privacy-link">Confidentialité</a>
                 </div>
             </div>
         </footer>
     </div>
 
     <script>
-        
-    // Initialisation de Stripe avec ta clé publique
-    const stripe = Stripe('pk_live_51RKepCF5b7dGTJRmh0N682ZntmzOmicttddisrp5SXRPZxnXfMEds2PNlHWlRWJRqxWacCeUf2h7E1MoHjuvwjya00nMjONpWO');
-        
+        // Initialisation de Stripe avec ta clé publique
+        const stripe = Stripe('pk_live_51RKepCF5b7dGTJRmh0N682ZntmzOmicttddisrp5SXRPZxnXfMEds2PNlHWlRWJRqxWacCeUf2h7E1MoHjuvwjya00nMjONpWO');
+
         // Constantes
         const BASE_PRICE = 29;
         
@@ -942,45 +949,47 @@
             quantityInput.value = value;
             updatePrice();
         });
-// Fonction pour rediriger vers Stripe Checkout
-async function redirectToCheckout(paymentMethod) {
-    const quantity = parseInt(quantityInput.value);
-    const totalPrice = quantity * BASE_PRICE;
 
-    try {
-        const response = await fetch('/create-checkout-session', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                quantity: quantity,
-                totalPrice: totalPrice,
-                paymentMethod: paymentMethod,
-            }),
-        });
-
-        const session = await response.json();
-
-        const { error } = await stripe.redirectToCheckout({
-            sessionId: session.id,
-        });
-
-        if (error) {
-            alert(`Erreur : ${error.message}`);
-        }
-    } catch (error) {
-        alert(`Erreur lors de la création de la session de paiement : ${error.message}`);
-    }
-}
-
-// Remplace les gestionnaires de paiement actuels
-applePayButton.addEventListener('click', () => redirectToCheckout('apple_pay'));
-cryptoButton.addEventListener('click', () => redirectToCheckout('crypto'));
-paypalButton.addEventListener('click', () => redirectToCheckout('paypal'));
-cardButton.addEventListener('click', () => redirectToCheckout('card'));
         // Mettre à jour le prix lorsque l'utilisateur tape dans l'input
         quantityInput.addEventListener('input', updatePrice);
+
+        // Fonction pour rediriger vers Stripe Checkout
+        async function redirectToCheckout(paymentMethod) {
+            const quantity = parseInt(quantityInput.value);
+            const totalPrice = quantity * BASE_PRICE;
+
+            try {
+                const response = await fetch('/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        quantity: quantity,
+                        totalPrice: totalPrice,
+                        paymentMethod: paymentMethod,
+                    }),
+                });
+
+                const session = await response.json();
+
+                const { error } = await stripe.redirectToCheckout({
+                    sessionId: session.id,
+                });
+
+                if (error) {
+                    alert(`Erreur : ${error.message}`);
+                }
+            } catch (error) {
+                alert(`Erreur lors de la création de la session de paiement : ${error.message}`);
+            }
+        }
+
+        // Gestionnaires des boutons de paiement
+        applePayButton.addEventListener('click', () => redirectToCheckout('apple_pay'));
+        cryptoButton.addEventListener('click', () => redirectToCheckout('crypto'));
+        paypalButton.addEventListener('click', () => redirectToCheckout('paypal'));
+        cardButton.addEventListener('click', () => redirectToCheckout('card'));
 
         // Fonctions de rotation 3D avec la souris
         function updatePlateRotation() {
@@ -1085,9 +1094,6 @@ cardButton.addEventListener('click', () => redirectToCheckout('card'));
         product3dContainer.addEventListener('mouseenter', () => {
             clearInterval(autoRotate);
         });
-
     </script>
-    
 </body>
 </html>
-
