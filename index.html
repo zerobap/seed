@@ -986,55 +986,65 @@
  const stripe = Stripe('pk_live_51RKepCF5b7dGTJRmh0N682ZntmzOmicttddisrp5SXRPZxnXfMEds2PNlHWlRWJRqxWacCeUf2h7E1MoHjuvwjya00nMjONpWO');
 
  // Paiement Apple Pay
- async function handleApplePay() {
- const quantity = parseInt(quantityInput.value);
- const totalPrice = (quantity * BASE_PRICE).toFixed(2);
- 
- try {
- const paymentRequest = stripe.paymentRequest({
- country: 'FR',
- currency: 'eur',
- total: {
- label: 'SEED Plaque',
- amount: Math.round(totalPrice * 100)
- },
- requestPayerName: true,
- requestPayerEmail: true
- });
+async function handleApplePay() {
+    const quantity = parseInt(quantityInput.value);
+    const totalPrice = (quantity * BASE_PRICE).toFixed(2);
 
- const result = await paymentRequest.canMakePayment();
- if (result && result.applePay) {
- const response = await fetch('https://seed-stripe-backend-jicoqxm4e-zerobaps-projects.vercel.app/create-payment-intent', {
- method: 'POST',
- headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({
- amount: Math.round(totalPrice * 100),
- currency: 'eur',
- payment_method_types: ['card'],
- automatic_payment_methods: { enabled: true }
- })
- });
- if (!response.ok) throw new Error('Erreur serveur');
- const { clientSecret } = await response.json();
+    try {
+        const paymentRequest = stripe.paymentRequest({
+            country: 'FR',
+            currency: 'eur',
+            total: {
+                label: 'SEED Plaque',
+                amount: Math.round(totalPrice * 100)
+            },
+            requestPayerName: true,
+            requestPayerEmail: true
+        });
 
- const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
- payment_method: {
- card: paymentRequest
- }
- });
+        const result = await paymentRequest.canMakePayment();
+        if (result && result.applePay) {
+            // Créer un Payment Intent
+            const response = await fetch('https://seed-stripe-backend-jicoqxm4e-zerobaps-projects.vercel.app/create-payment-intent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    amount: Math.round(totalPrice * 100),
+                    currency: 'eur',
+                    payment_method_types: ['card'],
+                    automatic_payment_methods: { enabled: true }
+                })
+            });
+            if (!response.ok) throw new Error('Erreur serveur');
+            const { clientSecret } = await response.json();
 
- if (error) {
- alert('Erreur Apple Pay : ' + error.message);
- } else if (paymentIntent.status === 'succeeded') {
- alert('Paiement Apple Pay réussi !');
- }
- } else {
- alert('Apple Pay n\'est pas disponible sur cet appareil.');
- }
- } catch (err) {
- alert('Erreur : ' + err.message);
- }
- }
+            // Afficher la fenêtre Apple Pay
+            paymentRequest.on('paymentmethod', async (ev) => {
+                const { error: confirmError } = await stripe.confirmPayment({
+                    clientSecret,
+                    confirmParams: {
+                        return_url: window.location.href // URL de redirection après paiement
+                    },
+                    payment_method: ev.paymentMethod.id
+                });
+
+                if (confirmError) {
+                    ev.complete('fail');
+                    alert('Erreur Apple Pay : ' + confirmError.message);
+                } else {
+                    ev.complete('success');
+                    alert('Paiement Apple Pay réussi !');
+                }
+            });
+
+            paymentRequest.show();
+        } else {
+            alert('Apple Pay n\'est pas disponible sur cet appareil.');
+        }
+    } catch (err) {
+        alert('Erreur : ' + err.message);
+    }
+}
 
  // Paiement Crypto avec Coinbase Commerce
  async function handleCryptoPayment() {
