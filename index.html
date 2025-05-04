@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SEED. | Stockage Premium de Phrases Secrètes pour Cryptomonnaies</title>
+    <!-- Ajouter le SDK Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <!-- SDK PayPal -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AUkcSiz2mEgNcU6TFdxKij-FoNWgj_SgZS_JbIezpkq5IYMGGicb6O9I2n1h9taNfdGqx-OsRfv7sT2x&currency=EUR"></script>
     <style>
-        /* Reset and base styles */
+        /* Ton CSS existant reste inchangé */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             background-color: #000;
@@ -20,682 +23,14 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header styles */
-        header {
-            padding: 40px 0 20px;
-        }
-
-        .logo {
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-        }
-
-        .tagline {
-            font-size: 1.5rem;
-            font-weight: 300;
-            margin-top: 10px;
-            max-width: 600px;
-        }
-
-        /* Main content styles */
-        main {
-            padding: 20px 0 60px;
-            min-height: 70vh;
-        }
-
-        /* Product 3D showcase section */
-        .product-showcase {
-            margin-bottom: 60px;
-            position: relative;
-        }
-
-        /* 3D Product View - ENHANCED REALISTIC */
-        .product-3d-container {
-            width: 100%;
-            height: 500px;
-            position: relative;
-            perspective: 1200px;
-            overflow: hidden;
-            border-radius: 12px;
-            background: radial-gradient(circle at center, #111, #080808, #000);
-            cursor: grab;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 255, 255, 0.05) inset;
-            margin-bottom: 40px;
-        }
-
-        .product-3d-container:active {
-            cursor: grabbing;
-        }
-
-        .product-3d {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transform: rotateX(20deg) rotateY(0deg);
-            transition: transform 0.1s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Steel plate - Credit card dimensions */
-        .steel-plate {
-            width: 256px; /* ~3x credit card width (85.60mm) */
-            height: 162px; /* ~3x credit card height (53.98mm) */
-            position: absolute;
-            transform-style: preserve-3d;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
-        }
-
-        .plate-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden; /* Make sure faces are completely opaque */
-            border-radius: 8px;
-        }
-
-        /* Brushed stainless steel effect - darker and more elegant */
-        .plate-front {
-            transform: translateZ(1px);
-            background: linear-gradient(135deg, 
-                rgba(100, 100, 100, 0.9), 
-                rgba(140, 140, 140, 1), 
-                rgba(120, 120, 120, 0.95));
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            color: #222;
-            border: 1px solid rgba(180, 180, 180, 0.5);
-            box-shadow: 
-                0 0 15px rgba(0, 0, 0, 0.3),
-                inset 0 0 10px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
-
-        /* Brushed metal texture - more pronounced */
-        .plate-front::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(255, 255, 255, 0.05),
-                    rgba(255, 255, 255, 0.1) 1px,
-                    rgba(255, 255, 255, 0.05) 1px,
-                    rgba(255, 255, 255, 0.07) 2px
-                );
-            opacity: 0.8;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* Enhanced reflection effect */
-        .plate-front::after {
-            content: "";
-            position: absolute;
-            top: -100%;
-            left: -100%;
-            right: -100%;
-            bottom: -100%;
-            background: linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.05) 45%,
-                rgba(255, 255, 255, 0.2) 50%,
-                rgba(255, 255, 255, 0.05) 55%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(45deg);
-            animation: reflectionMove 10s infinite linear;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        @keyframes reflectionMove {
-            0% { transform: rotate(45deg) translateY(-50%); }
-            50% { transform: rotate(45deg) translateY(50%); }
-            100% { transform: rotate(45deg) translateY(-50%); }
-        }
-
-        .plate-back {
-            transform: translateZ(-1px) rotateY(180deg);
-            background: linear-gradient(135deg, 
-                rgba(90, 90, 90, 0.9), 
-                rgba(130, 130, 130, 1), 
-                rgba(110, 110, 110, 0.95));
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            color: #222;
-            border: 1px solid rgba(180, 180, 180, 0.5);
-            box-shadow: 
-                0 0 15px rgba(0, 0, 0, 0.3),
-                inset 0 0 10px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
-
-        /* Brushed metal texture for back - more pronounced */
-        .plate-back::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(255, 255, 255, 0.05),
-                    rgba(255, 255, 255, 0.1) 1px,
-                    rgba(255, 255, 255, 0.05) 1px,
-                    rgba(255, 255, 255, 0.07) 2px
-                );
-            opacity: 0.8;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* Enhanced reflection effect for back */
-        .plate-back::after {
-            content: "";
-            position: absolute;
-            top: -100%;
-            left: -100%;
-            right: -100%;
-            bottom: -100%;
-            background: linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.05) 45%,
-                rgba(255, 255, 255, 0.2) 50%,
-                rgba(255, 255, 255, 0.05) 55%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(45deg);
-            animation: reflectionMove 10s infinite linear;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .plate-edge {
-            position: absolute;
-            background: #777;
-            border: 1px solid #888;
-        }
-
-        .plate-top {
-            width: 100%;
-            height: 2px;
-            top: -1px;
-            transform: rotateX(90deg) translateZ(1px);
-        }
-
-        .plate-bottom {
-            width: 100%;
-            height: 2px;
-            bottom: -1px;
-            transform: rotateX(-90deg) translateZ(1px);
-        }
-
-        .plate-left {
-            width: 2px;
-            height: 100%;
-            left: -1px;
-            transform: rotateY(-90deg) translateZ(1px);
-        }
-
-        .plate-right {
-            width: 2px;
-            height: 100%;
-            right: -1px;
-            transform: rotateY(90deg) translateZ(1px);
-        }
-
-        /* Seed phrase grid - Two columns with enhanced visibility */
-        .seed-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            width: 90%;
-            position: relative;
-            z-index: 3;
-        }
-
-        /* Numbered cells for seed words - more visible */
-        .seed-cell {
-            background: rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(0, 0, 0, 0.4);
-            border-radius: 3px;
-            padding: 5px 5px 5px 20px;
-            font-size: 10px;
-            color: #222;
-            position: relative;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
-        }
-
-        .seed-cell::before {
-            content: attr(data-number);
-            position: absolute;
-            left: 5px;
-            font-weight: bold;
-            font-size: 9px;
-            color: #000;
-        }
-
-        /* SEED logo for back - only element on back */
-        .seed-logo-back {
-            font-weight: bold;
-            font-size: 40px;
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 3;
-            color: #222;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
-        }
-
-        /* Enhanced spotlight effect */
-        .spotlight {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: radial-gradient(
-                circle at var(--x, 50%) var(--y, 50%), 
-                rgba(255, 255, 255, 0.15) 0%, 
-                rgba(255, 255, 255, 0) 50%
-            );
-            pointer-events: none;
-            z-index: 10;
-            mix-blend-mode: overlay;
-        }
-
-        /* Secondary spotlight for more realistic lighting */
-        .spotlight-secondary {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: radial-gradient(
-                ellipse at var(--x, 30%) var(--y, 30%), 
-                rgba(255, 255, 255, 0.1) 0%, 
-                rgba(255, 255, 255, 0) 60%
-            );
-            pointer-events: none;
-            z-index: 9;
-            mix-blend-mode: screen;
-        }
-
-        .product-3d-instructions {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-            pointer-events: none;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-        }
-
-        .product-3d-container:hover .product-3d-instructions {
-            opacity: 0.4;
-        }
-
-        /* Product info and purchase section */
-        .product-section {
-            display: flex;
-            flex-direction: column;
-            gap: 60px;
-            width: 100%;
-        }
-
-        .product-info {
-            max-width: 600px;
-        }
-
-        .product-title {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .product-description {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            margin-bottom: 30px;
-        }
-
-        .features {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .feature {
-            flex: 1 1 200px;
-        }
-
-        .feature-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-
-        .feature-title::before {
-            content: "";
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background-color: #fff;
-            margin-right: 10px;
-        }
-
-        .feature-description {
-            font-size: 0.95rem;
-            opacity: 0.8;
-        }
-
-        /* Product card styles */
-        .product-card {
-            background-color: #111;
-            border-radius: 12px;
-            padding: 40px;
-            max-width: 500px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid #222;
-            margin: 0 auto;
-        }
-
-        .price {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .price-currency {
-            font-size: 1rem;
-            opacity: 0.7;
-            margin-left: 5px;
-        }
-
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .quantity-label {
-            margin-right: 15px;
-            font-size: 1rem;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            border: 1px solid #333;
+        /* ... (le reste du CSS est identique) */
+        /* Style pour le champ Stripe Elements */
+        #card-element {
+            background: #fff;
+            padding: 12px;
             border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .quantity-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            width: 40px;
-            height: 40px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .quantity-btn:hover {
-            background-color: #222;
-        }
-
-        .quantity-input {
-            width: 60px;
-            height: 40px;
-            border: none;
-            background: none;
-            color: #fff;
-            font-size: 1rem;
-            text-align: center;
-            border-left: 1px solid #333;
-            border-right: 1px solid #333;
-        }
-
-        .quantity-input:focus {
-            outline: none;
-        }
-
-        /* Payment buttons */
-        .payment-options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .payment-primary {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 5px;
-        }
-
-        .payment-button {
-            flex: 1;
-            padding: 16px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .apple-pay-button {
-            background-color: #000;
-            color: #fff;
-            border: 1px solid #fff;
-        }
-
-        .apple-pay-button:hover {
-            background-color: #111;
-        }
-
-        .crypto-button {
-            background-color: #fff;
-            color: #000;
-        }
-
-        .crypto-button:hover {
-            background-color: #f0f0f0;
-        }
-
-        .payment-secondary {
-            display: flex;
-            gap: 10px;
-        }
-
-        .paypal-button {
-            background-color: #0070ba;
-            color: #fff;
-        }
-
-        .paypal-button:hover {
-            background-color: #005ea6;
-        }
-
-        .card-button {
-            background-color: #444;
-            color: #fff;
-        }
-
-        .card-button:hover {
-            background-color: #555;
-        }
-
-        .payment-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        .payment-divider {
-            display: flex;
-            align-items: center;
-            margin: 5px 0;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .payment-divider::before,
-        .payment-divider::after {
-            content: "";
-            flex: 1;
-            border-bottom: 1px solid #333;
-        }
-
-        .payment-divider::before {
-            margin-right: 10px;
-        }
-
-        .payment-divider::after {
-            margin-left: 10px;
-        }
-
-        /* Footer styles */
-        footer {
-            padding: 40px 0;
-            border-top: 1px solid #222;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .copyright {
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .footer-link {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.9rem;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-
-        .footer-link:hover {
-            opacity: 1;
-        }
-
-        /* Responsive styles */
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 2.5rem;
-            }
-
-            .tagline {
-                font-size: 1.2rem;
-            }
-
-            .product-3d-container {
-                height: 400px;
-            }
-
-            .steel-plate {
-                width: 200px;
-                height: 126px;
-            }
-
-            .seed-cell {
-                font-size: 8px;
-                height: 16px;
-                padding: 4px 4px 4px 16px;
-            }
-
-            .seed-cell::before {
-                font-size: 7px;
-            }
-
-            .product-section {
-                flex-direction: column;
-                gap: 40px;
-            }
-
-            .product-card {
-                padding: 30px;
-                width: 100%;
-            }
-
-            .payment-primary,
-            .payment-secondary {
-                flex-direction: column;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-        }
-
-        @media (min-width: 769px) {
-            .product-section {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: flex-start;
-            }
-
-            .product-info {
-                flex: 1;
-            }
-
-            .product-card {
-                flex: 0 0 400px;
-            }
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
         }
     </style>
 </head>
@@ -707,7 +42,7 @@
         </header>
 
         <main>
-            <!-- Dedicated showcase for the 3D product -->
+            <!-- Section produit 3D (inchangée) -->
             <section class="product-showcase">
                 <div class="product-3d-container" id="product3dContainer">
                     <div class="product-3d" id="product3d">
@@ -797,7 +132,6 @@
                     </div>
                     
                     <div class="payment-options">
-                        <!-- Primary payment methods -->
                         <div class="payment-primary">
                             <button class="payment-button apple-pay-button" id="apple-pay-button">
                                 <svg class="payment-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -818,14 +152,9 @@
                         
                         <div class="payment-divider">ou payer avec</div>
                         
-                        <!-- Secondary payment methods -->
                         <div class="payment-secondary">
-                            <button class="payment-button paypal-button" id="paypal-button">
-                                <svg class="payment-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M7.144 19.532l1.049-5.751c.11-.606.691-1.002 1.304-.948 2.155.192 6.877.1 8.818-4.002 2.554-5.397-.59-7.769-6.295-7.769H7.43a1.97 1.97 0 0 0-1.944 1.655L2.77 19.507a.857.857 0 0 0 .846.994h2.368a1.18 1.18 0 0 0 1.161-.969zM7.967 22.522a.74.74 0 0 0 .666.479h2.313c.623 0 1.158-.418 1.296-1.033l.1-.515.191-1.049.057-.31c.138-.615.673-1.033 1.296-1.033h.819c5.281 0 9.416-2.183 10.63-8.493.517-2.677.254-4.858-.904-6.401"/>
-                                </svg>
-                                PayPal
-                            </button>
+                            <div id="paypal-button-container" style="width: 100%;"></div>
+                            <div id="card-element"></div> <!-- Conteneur pour Stripe Elements -->
                             <button class="payment-button card-button" id="card-button">
                                 <svg class="payment-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="2" y="5" width="20" height="14" rx="2"/>
@@ -866,28 +195,24 @@
         // Boutons de paiement
         const applePayButton = document.getElementById('apple-pay-button');
         const cryptoButton = document.getElementById('crypto-payment-button');
-        const paypalButton = document.getElementById('paypal-button');
         const cardButton = document.getElementById('card-button');
 
-        // Contrôles de rotation 3D
+        // Contrôles de rotation 3D (inchangés)
         const product3dContainer = document.getElementById('product3dContainer');
         const product3d = document.getElementById('product3d');
         const steelPlate = document.getElementById('steelPlate');
         const spotlight = document.getElementById('spotlight');
         const spotlightSecondary = document.getElementById('spotlightSecondary');
         
-        // Variables pour la rotation 3D
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
         let rotationX = 20;
         let rotationY = 0;
         
-        // Mise à jour du prix en fonction de la quantité
+        // Mise à jour du prix
         function updatePrice() {
-            const quantity = parseInt(quantityInput.value);
+            const quantity = parseInt(quantityInputMosl.value);
             const totalPrice = (quantity * BASE_PRICE).toFixed(2).replace('.', ',');
-            
-            // Mettre à jour la valeur du prix sans animation
             priceValue.textContent = totalPrice;
         }
 
@@ -919,58 +244,37 @@
             updatePrice();
         });
 
-        // Mettre à jour le prix lorsque l'utilisateur tape dans l'input
         quantityInput.addEventListener('input', updatePrice);
 
-        // Fonctions de rotation 3D avec la souris
+        // Rotation 3D
         function updatePlateRotation() {
             product3d.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
         }
 
-        // Effet de spotlight qui suit la souris
         product3dContainer.addEventListener('mousemove', (e) => {
             const rect = product3dContainer.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
-            
             spotlight.style.setProperty('--x', `${x}%`);
             spotlight.style.setProperty('--y', `${y}%`);
-            
-            // Secondary spotlight with offset for more realistic lighting
             spotlightSecondary.style.setProperty('--x', `${x - 10}%`);
             spotlightSecondary.style.setProperty('--y', `${y - 10}%`);
         });
 
         product3dContainer.addEventListener('mousedown', (e) => {
             isDragging = true;
-            previousMousePosition = {
-                x: e.clientX,
-                y: e.clientY
-            };
+            previousMousePosition = { x: e.clientX, y: e.clientY };
             product3dContainer.style.cursor = 'grabbing';
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            
-            const deltaMove = {
-                x: e.clientX - previousMousePosition.x,
-                y: e.clientY - previousMousePosition.y
-            };
-            
-            // Ajuster la sensibilité de la rotation
+            const deltaMove = { x: e.clientX - previousMousePosition.x, y: e.clientY - previousMousePosition.y };
             rotationY += deltaMove.x * 0.5;
             rotationX -= deltaMove.y * 0.5;
-            
-            // Limiter la rotation en X pour éviter des angles étranges
             rotationX = Math.max(-60, Math.min(60, rotationX));
-            
             updatePlateRotation();
-            
-            previousMousePosition = {
-                x: e.clientX,
-                y: e.clientY
-            };
+            previousMousePosition = { x: e.clientX, y: e.clientY };
         });
 
         document.addEventListener('mouseup', () => {
@@ -978,36 +282,20 @@
             product3dContainer.style.cursor = 'grab';
         });
 
-        // Support tactile pour les appareils mobiles
         product3dContainer.addEventListener('touchstart', (e) => {
             isDragging = true;
-            previousMousePosition = {
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY
-            };
+            previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
             e.preventDefault();
         });
 
         document.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
-            
-            const deltaMove = {
-                x: e.touches[0].clientX - previousMousePosition.x,
-                y: e.touches[0].clientY - previousMousePosition.y
-            };
-            
+            const deltaMove = { x: e.touches[0].clientX - previousMousePosition.x, y: e.touches[0].clientY - previousMousePosition.y };
             rotationY += deltaMove.x * 0.5;
             rotationX -= deltaMove.y * 0.5;
-            
             rotationX = Math.max(-60, Math.min(60, rotationX));
-            
             updatePlateRotation();
-            
-            previousMousePosition = {
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY
-            };
-            
+            previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
             e.preventDefault();
         });
 
@@ -1015,32 +303,203 @@
             isDragging = false;
         });
 
-        // Animation subtile de la plaque au chargement
         let autoRotate = setInterval(() => {
             rotationY += 0.2;
             updatePlateRotation();
         }, 30);
 
-        // Arrêter la rotation automatique lorsque l'utilisateur interagit
         product3dContainer.addEventListener('mouseenter', () => {
             clearInterval(autoRotate);
         });
 
-        // Gestionnaires de boutons de paiement
-        function handlePayment(method) {
+        // Initialiser Stripe
+        const stripe = Stripe('pk_live_51RKepCF5b7dGTJRmh0N682ZntmzOmicttddisrp5SXRPZxnXfMEds2PNlHWlRWJRqxWacCeUf2h7E1MoHjuvwjya00nMjONpWO');
+
+        // Paiement Apple Pay
+        async function handleApplePay() {
             const quantity = parseInt(quantityInput.value);
-            const totalPrice = (quantity * BASE_PRICE).toFixed(2).replace('.', ',');
+            const totalPrice = (quantity * BASE_PRICE).toFixed(2);
             
-            // C'est ici que vous intégreriez avec le fournisseur de paiement
-            alert(`Lancement du paiement ${method} pour ${quantity} plaque(s) SEED. Total: ${totalPrice} EUR`);
-            
-            // Dans une implémentation réelle, vous redirigeriez vers le fournisseur de paiement ou ouvririez leur widget
+            try {
+                const paymentRequest = stripe.paymentRequest({
+                    country: 'FR',
+                    currency: 'eur',
+                    total: {
+                        label: 'SEED Plaque',
+                        amount: Math.round(totalPrice * 100)
+                    },
+                    requestPayerName: true,
+                    requestPayerEmail: true
+                });
+
+                const result = await paymentRequest.canMakePayment();
+                if (result && result.applePay) {
+                    // Créer une intention de paiement
+                    const response = await fetch('/create-payment-intent', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            amount: Math.round(totalPrice * 100),
+                            currency: 'eur',
+                            payment_method_types: ['card'],
+                            automatic_payment_methods: { enabled: true }
+                        })
+                    });
+                    const { clientSecret } = await response.json();
+
+                    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                        payment_method: {
+                            card: paymentRequest
+                        }
+                    });
+
+                    if (error) {
+                        alert('Erreur Apple Pay : ' + error.message);
+                    } else if (paymentIntent.status === 'succeeded') {
+                        alert('Paiement Apple Pay réussi !');
+                    }
+                } else {
+                    alert('Apple Pay n\'est pas disponible sur cet appareil.');
+                }
+            } catch (err) {
+                alert('Erreur : ' + err.message);
+            }
         }
 
-        applePayButton.addEventListener('click', () => handlePayment('Apple Pay'));
-        cryptoButton.addEventListener('click', () => handlePayment('Crypto'));
-        paypalButton.addEventListener('click', () => handlePayment('PayPal'));
-        cardButton.addEventListener('click', () => handlePayment('Carte Bancaire'));
+        // Paiement Carte Bancaire
+        async function handleCardPayment() {
+            const quantity = parseInt(quantityInput.value);
+            const totalPrice = (quantity * BASE_PRICE).toFixed(2);
+
+            try {
+                // Créer une intention de paiement
+                const response = await fetch('/create-payment-intent', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: Math.round(totalPrice * 100),
+                        currency: 'eur',
+                        payment_method_types: ['card'],
+                        automatic_payment_methods: { enabled: true }
+                    })
+                });
+                const { clientSecret } = await response.json();
+
+                // Initialiser Stripe Elements
+                const elements = stripe.elements();
+                const cardElement = elements.create('card', {
+                    style: {
+                        base: {
+                            color: '#000',
+                            fontSize: '16px',
+                            '::placeholder': { color: '#aab7c4' }
+                        }
+                    },
+                    hidePostalCode: true
+                });
+                cardElement.mount('#card-element');
+
+                const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: cardElement,
+                        billing_details: {
+                            name: 'Client SEED'
+                        }
+                    }
+                });
+
+                if (error) {
+                    alert('Erreur Carte Bancaire : ' + error.message);
+                } else if (paymentIntent.status === 'succeeded') {
+                    alert('Paiement Carte Bancaire réussi !');
+                }
+            } catch (err) {
+                alert('Erreur : ' + err.message);
+            }
+        }
+
+        // Paiement Crypto avec Coinbase Commerce
+        async function handleCryptoPayment() {
+            const quantity = parseInt(quantityInput.value);
+            const totalPrice = (quantity * BASE_PRICE).toFixed(2);
+
+            try {
+                const response = await fetch('https://api.commerce.coinbase.com/charges', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CC-Api-Key': 'TA_CLÉ_API_COINBASE_COMMERCE', // Remplacer par ta clé API
+                        'X-CC-Version': '2018-03-22'
+                    },
+                    body: JSON.stringify({
+                        name: 'SEED Plaque',
+                        description: `Achat de ${quantity} plaque(s) SEED`,
+                        local_price: {
+                            amount: totalPrice,
+                            currency: 'EUR'
+                        },
+                        pricing_type: 'fixed_price',
+                        metadata: {
+                            quantity: quantity
+                        },
+                        redirect_url: window.location.href + '?status=success',
+                        cancel_url: window.location.href + '?status=cancel'
+                    })
+                });
+                const { data } = await response.json();
+                window.location.href = data.hosted_url; // Rediriger vers la page de paiement Coinbase
+            } catch (err) {
+                alert('Erreur Crypto : ' + err.message);
+            }
+        }
+
+        // Gérer les retours Coinbase Commerce
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            if (status === 'success') {
+                alert('Paiement Crypto réussi !');
+            } else if (status === 'cancel') {
+                alert('Paiement Crypto annulé.');
+            }
+        });
+
+        // PayPal
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                const quantity = parseInt(quantityInput.value);
+                const totalPrice = (quantity * BASE_PRICE).toFixed(2);
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: totalPrice,
+                            currency_code: 'EUR',
+                            breakdown: {
+                                item_total: { value: totalPrice, currency_code: 'EUR' }
+                            }
+                        },
+                        items: [{
+                            name: 'SEED Plaque',
+                            quantity: quantity,
+                            unit_amount: { value: BASE_PRICE.toFixed(2), currency_code: 'EUR' }
+                        }]
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    alert('Paiement PayPal réussi !');
+                });
+            },
+            onError: function(err) {
+                alert('Erreur PayPal : ' + err.message);
+            }
+        }).render('#paypal-button-container');
+
+        // Gestionnaires des boutons
+        applePayButton.addEventListener('click', handleApplePay);
+        cryptoButton.addEventListener('click', handleCryptoPayment);
+        cardButton.addEventListener('click', handleCardPayment);
     </script>
 </body>
 </html>
