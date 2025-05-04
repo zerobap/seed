@@ -8,372 +8,701 @@
     <script src="https://js.stripe.com/v3/"></script>
     <!-- SDK PayPal -->
     <script src="https://www.paypal.com/sdk/js?client-id=AUkcSiz2mEgNcU6TFdxKij-FoNWgj_SgZS_JbIezpkq5IYMGGicb6O9I2n1h9taNfdGqx-OsRfv7sT2x&currency=EUR"></script>
-    <!-- Police Montserrat -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS restauré avec plaque sombre, texture brossée, cadre pleine largeur, header à gauche */
+        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             background-color: #000;
             color: #fff;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
+
+        /* Header styles */
         header {
-            padding: 40px 20px;
-            text-align: left; /* Aligné à gauche */
+            padding: 40px 0 20px;
         }
+
         .logo {
-            font-size: 48px;
+            font-size: 3rem;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: -1px;
         }
+
         .tagline {
-            font-size: 16px;
-            color: #ccc;
-            max-width: 500px;
-            margin: 15px 0 0;
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-top: 10px;
+            max-width: 600px;
         }
+
+        /* Main content styles */
+        main {
+            padding: 20px 0 60px;
+            min-height: 70vh;
+        }
+
+        /* Product 3D showcase section */
         .product-showcase {
-            padding: 0;
-            width: 100%;
-            background: linear-gradient(to bottom, #1a1a1a 0%, #000 100%); /* Fond qui se fond dans la page */
+            margin-bottom: 60px;
+            position: relative;
         }
+
+        /* 3D Product View - ENHANCED REALISTIC */
         .product-3d-container {
-            position: relative;
             width: 100%;
-            height: 400px; /* Hauteur pour occuper le haut de la page */
-            perspective: 1000px;
-            cursor: grab;
-            user-select: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .product-3d {
-            width: 300px; /* Plaque petite */
-            height: 200px;
+            height: 500px;
             position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.1s;
+            perspective: 1200px;
+            overflow: hidden;
+            border-radius: 12px;
+            background: radial-gradient(circle at center, #111, #080808, #000);
+            cursor: grab;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 255, 255, 0.05) inset;
+            margin-bottom: 40px;
         }
-        .steel-plate {
-            position: absolute;
+
+        .product-3d-container:active {
+            cursor: grabbing;
+        }
+
+        .product-3d {
             width: 100%;
             height: 100%;
+            position: relative;
             transform-style: preserve-3d;
-            background: linear-gradient(135deg, #4b5e6a 0%, #2a3439 100%); /* Couleur sombre acier */
-            border: 2px solid #3a444a;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-            /* Texture brossée */
-            background-image: linear-gradient(
-                45deg,
-                transparent 45%,
-                rgba(255, 255, 255, 0.05) 50%,
-                transparent 55%
-            );
-            background-size: 4px 4px;
+            transform: rotateX(20deg) rotateY(0deg);
+            transition: transform 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        /* Steel plate - Credit card dimensions */
+        .steel-plate {
+            width: 256px; /* ~3x credit card width (85.60mm) */
+            height: 162px; /* ~3x credit card height (53.98mm) */
+            position: absolute;
+            transform-style: preserve-3d;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
+        }
+
         .plate-face {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
+            border-radius: 8px;
         }
+
+        /* Brushed stainless steel effect - darker and more elegant */
         .plate-front {
-            transform: translateZ(10px);
-            background: inherit;
+            transform: translateZ(1px);
+            background: linear-gradient(135deg, 
+                rgba(100, 100, 100, 0.9), 
+                rgba(140, 140, 140, 1), 
+                rgba(120, 120, 120, 0.95));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            color: #222;
+            border: 1px solid rgba(180, 180, 180, 0.5);
+            box-shadow: 
+                0 0 15px rgba(0, 0, 0, 0.3),
+                inset 0 0 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
+
+        /* Brushed metal texture - more pronounced */
+        .plate-front::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.05),
+                    rgba(255, 255, 255, 0.1) 1px,
+                    rgba(255, 255, 255, 0.05) 1px,
+                    rgba(255, 255, 255, 0.07) 2px
+                );
+            opacity: 0.8;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Enhanced reflection effect */
+        .plate-front::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            right: -100%;
+            bottom: -100%;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.05) 45%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.05) 55%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(45deg);
+            animation: reflectionMove 10s infinite linear;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        @keyframes reflectionMove {
+            0% { transform: rotate(45deg) translateY(-50%); }
+            50% { transform: rotate(45deg) translateY(50%); }
+            100% { transform: rotate(45deg) translateY(-50%); }
+        }
+
         .plate-back {
-            transform: translateZ(-10px) rotateY(180deg);
-            background: inherit;
+            transform: translateZ(-1px) rotateY(180deg);
+            background: linear-gradient(135deg, 
+                rgba(90, 90, 90, 0.9), 
+                rgba(130, 130, 130, 1), 
+                rgba(110, 110, 110, 0.95));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            color: #222;
+            border: 1px solid rgba(180, 180, 180, 0.5);
+            box-shadow: 
+                0 0 15px rgba(0, 0, 0, 0.3),
+                inset 0 0 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
+
+        /* Brushed metal texture for back - more pronounced */
+        .plate-back::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.05),
+                    rgba(255, 255, 255, 0.1) 1px,
+                    rgba(255, 255, 255, 0.05) 1px,
+                    rgba(255, 255, 255, 0.07) 2px
+                );
+            opacity: 0.8;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Enhanced reflection effect for back */
+        .plate-back::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            right: -100%;
+            bottom: -100%;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.05) 45%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.05) 55%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(45deg);
+            animation: reflectionMove 10s infinite linear;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .plate-edge {
+            position: absolute;
+            background: #777;
+            border: 1px solid #888;
+        }
+
+        .plate-top {
+            width: 100%;
+            height: 2px;
+            top: -1px;
+            transform: rotateX(90deg) translateZ(1px);
+        }
+
+        .plate-bottom {
+            width: 100%;
+            height: 2px;
+            bottom: -1px;
+            transform: rotateX(-90deg) translateZ(1px);
+        }
+
+        .plate-left {
+            width: 2px;
+            height: 100%;
+            left: -1px;
+            transform: rotateY(-90deg) translateZ(1px);
+        }
+
+        .plate-right {
+            width: 2px;
+            height: 100%;
+            right: -1px;
+            transform: rotateY(90deg) translateZ(1px);
+        }
+
+        /* Seed phrase grid - Two columns with enhanced visibility */
         .seed-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
-            padding: 15px;
-            height: 100%;
+            width: 90%;
+            position: relative;
+            z-index: 3;
         }
+
+        /* Numbered cells for seed words - more visible */
         .seed-cell {
-            background: #e5e7eb;
-            border: 1px solid #d1d5db;
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.4);
             border-radius: 3px;
+            padding: 5px 5px 5px 20px;
+            font-size: 10px;
+            color: #222;
+            position: relative;
+            height: 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #374151;
+            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
         }
-        .seed-logo-back {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            font-size: 36px;
-            font-weight: 700;
-            color: #e5e7eb;
-        }
-        .plate-edge {
+
+        .seed-cell::before {
+            content: attr(data-number);
             position: absolute;
-            background: #3a444a;
+            left: 5px;
+            font-weight: bold;
+            font-size: 9px;
+            color: #000;
         }
-        .plate-top, .plate-bottom {
-            width: 100%;
-            height: 10px;
+
+        /* SEED logo for back - only element on back */
+        .seed-logo-back {
+            font-weight: bold;
+            font-size: 40px;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 3;
+            color: #222;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
         }
-        .plate-left, .plate-right {
-            width: 10px;
-            height: 100%;
-        }
-        .plate-top {
-            top: -5px;
-            transform: rotateX(90deg) translateZ(5px);
-        }
-        .plate-bottom {
-            bottom: -5px;
-            transform: rotateX(-90deg) translateZ(5px);
-        }
-        .plate-left {
-            left: -5px;
-            transform: rotateY(-90deg) translateZ(5px);
-        }
-        .plate-right {
-            right: -5px;
-            transform: rotateY(90deg) translateZ(5px);
-        }
+
+        /* Enhanced spotlight effect */
         .spotlight {
             position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 40%);
+            top: 0;
+            left: 0;
+            background: radial-gradient(
+                circle at var(--x, 50%) var(--y, 50%), 
+                rgba(255, 255, 255, 0.15) 0%, 
+                rgba(255, 255, 255, 0) 50%
+            );
             pointer-events: none;
+            z-index: 10;
+            mix-blend-mode: overlay;
         }
+
+        /* Secondary spotlight for more realistic lighting */
         .spotlight-secondary {
             position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 60%);
+            top: 0;
+            left: 0;
+            background: radial-gradient(
+                ellipse at var(--x, 30%) var(--y, 30%), 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0) 60%
+            );
             pointer-events: none;
+            z-index: 9;
+            mix-blend-mode: screen;
         }
+
         .product-3d-instructions {
             position: absolute;
-            bottom: -30px;
-            width: 100%;
+            bottom: 20px;
+            left: 0;
+            right: 0;
             text-align: center;
-            color: #ccc;
+            color: #888;
             font-size: 14px;
+            pointer-events: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
         }
+
+        .product-3d-container:hover .product-3d-instructions {
+            opacity: 0.4;
+        }
+
+        /* Product info and purchase section */
         .product-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            padding: 60px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            width: 100%;
         }
+
         .product-info {
-            max-width: 500px;
+            max-width: 600px;
         }
+
         .product-title {
-            font-size: 28px;
+            font-size: 2.5rem;
             font-weight: 600;
             margin-bottom: 20px;
         }
+
         .product-description {
-            font-size: 16px;
-            color: #ccc;
+            font-size: 1.1rem;
+            line-height: 1.7;
             margin-bottom: 30px;
         }
+
         .features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
         }
+
+        .feature {
+            flex: 1 1 200px;
+        }
+
         .feature-title {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 10px;
-            position: relative;
-            padding-left: 16px;
-        }
-        .feature-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
-            background: #fff;
-            border-radius: 2px;
-        }
-        .feature-description {
-            font-size: 14px;
-            color: #ccc;
-        }
-        .product-card {
-            background: #1a1a1a;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 400px;
-            margin-left: auto;
-        }
-        .price {
-            font-size: 32px;
+            font-size: 1.2rem;
             font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #fff;
+            margin-right: 10px;
+        }
+
+        .feature-description {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        /* Product card styles */
+        .product-card {
+            background-color: #111;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid #222;
+            margin: 0 auto;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
         }
+
         .price-currency {
-            font-size: 18px;
-            color: #ccc;
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-left: 5px;
         }
+
         .quantity-selector {
             display: flex;
             align-items: center;
             margin-bottom: 30px;
         }
+
         .quantity-label {
-            font-size: 16px;
-            margin-right: 20px;
+            margin-right: 15px;
+            font-size: 1rem;
         }
+
         .quantity-controls {
             display: flex;
             align-items: center;
-            background: #2a2a2a;
-            border-radius: 8px;
+            border: 1px solid #333;
+            border-radius: 6px;
             overflow: hidden;
         }
+
         .quantity-btn {
             background: none;
             border: none;
             color: #fff;
-            font-size: 18px;
             width: 40px;
             height: 40px;
+            font-size: 1.2rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: background-color 0.2s;
         }
+
         .quantity-btn:hover {
-            background: #3a3a3a;
+            background-color: #222;
         }
+
         .quantity-input {
             width: 60px;
-            background: none;
+            height: 40px;
             border: none;
-            text-align: center;
+            background: none;
             color: #fff;
-            font-size: 16px;
+            font-size: 1rem;
+            text-align: center;
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
         }
-        .quantity-input::-webkit-inner-spin-button,
-        .quantity-input::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+
+        .quantity-input:focus {
+            outline: none;
         }
+
+        /* Payment buttons */
         .payment-options {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
+
         .payment-primary {
             display: flex;
             gap: 10px;
+            margin-bottom: 5px;
         }
+
         .payment-button {
             flex: 1;
-            background: #fff;
-            color: #000;
+            padding: 16px;
             border: none;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 16px;
-            font-weight: 500;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-        }
-        .payment-button:hover {
-            background: #f5f5f5;
-        }
-        .payment-icon {
-            width: 24px;
-            height: 24px;
-        }
-        .payment-divider {
-            text-align: center;
-            color: #ccc;
-            font-size: 14px;
-            margin: 10px 0;
-        }
-        .payment-secondary {
-            display: flex;
-            flex-direction: column;
             gap: 10px;
         }
+
+        .apple-pay-button {
+            background-color: #000;
+            color: #fff;
+            border: 1px solid #fff;
+        }
+
+        .apple-pay-button:hover {
+            background-color: #111;
+        }
+
+        .crypto-button {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .crypto-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .payment-secondary {
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-button {
+            background-color: #444;
+            color: #fff;
+        }
+
+        .card-button:hover {
+            background-color: #555;
+        }
+
         #paypal-button-container {
             width: 100%;
             min-height: 44px;
         }
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: #ccc;
-            font-size: 14px;
+
+        #card-element {
+            margin-bottom: 10px;
+            padding: 12px;
+            background-color: #222;
+            border: 1px solid #333;
+            border-radius: 6px;
         }
+
+        .payment-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .payment-divider {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .payment-divider::before,
+        .payment-divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #333;
+        }
+
+        .payment-divider::before {
+            margin-right: 10px;
+        }
+
+        .payment-divider::after {
+            margin-left: 10px;
+        }
+
+        /* Footer styles */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid #222;
+        }
+
         .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
         .footer-links {
             display: flex;
             gap: 20px;
         }
+
         .footer-link {
-            color: #ccc;
-            text-decoration: none;
-        }
-        .footer-link:hover {
             color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
         }
+
+        .footer-link:hover {
+            opacity: 1;
+        }
+
+        /* Responsive styles */
         @media (max-width: 768px) {
-            .product-section {
-                grid-template-columns: 1fr;
-            }
-            .product-card {
-                margin: 0 auto;
-            }
-            .product-3d-container {
-                height: 300px;
-            }
-            .product-3d {
-                width: 250px;
-                height: 150px;
-            }
             .logo {
-                font-size: 36px;
+                font-size: 2.5rem;
             }
+
             .tagline {
-                font-size: 14px;
+                font-size: 1.2rem;
+            }
+
+            .product-3d-container {
+                height: 400px;
+            }
+
+            .steel-plate {
+                width: 200px;
+                height: 126px;
+            }
+
+            .seed-cell {
+                font-size: 8px;
+                height: 16px;
+                padding: 4px 4px 4px 16px;
+            }
+
+            .seed-cell::before {
+                font-size: 7px;
+            }
+
+            .product-section {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .product-card {
+                padding: 30px;
+                width: 100%;
+            }
+
+            .payment-primary,
+            .payment-secondary {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .product-section {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            .product-info {
+                flex: 1;
+            }
+
+            .product-card {
+                flex: 0 0 400px;
             }
         }
     </style>
@@ -386,6 +715,7 @@
         </header>
 
         <main>
+            <!-- Dedicated showcase for the 3D product -->
             <section class="product-showcase">
                 <div class="product-3d-container" id="product3dContainer">
                     <div class="product-3d" id="product3d">
@@ -475,6 +805,7 @@
                     </div>
                     
                     <div class="payment-options">
+                        <!-- Primary payment methods -->
                         <div class="payment-primary">
                             <button class="payment-button apple-pay-button" id="apple-pay-button">
                                 <svg class="payment-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -495,9 +826,10 @@
                         
                         <div class="payment-divider">ou payer avec</div>
                         
+                        <!-- Secondary payment methods -->
                         <div class="payment-secondary">
                             <div id="paypal-button-container"></div>
-                            <div id="card-element" style="margin-bottom: 10px;"></div>
+                            <div id="card-element"></div>
                             <button class="payment-button card-button" id="card-button">
                                 <svg class="payment-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="2" y="5" width="20" height="14" rx="2"/>
@@ -547,12 +879,13 @@
         const spotlight = document.getElementById('spotlight');
         const spotlightSecondary = document.getElementById('spotlightSecondary');
         
+        // Variables pour la rotation 3D
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
         let rotationX = 20;
         let rotationY = 0;
         
-        // Mise à jour du prix
+        // Mise à jour du prix en fonction de la quantité
         function updatePrice() {
             const quantity = parseInt(quantityInput.value);
             const totalPrice = (quantity * BASE_PRICE).toFixed(2).replace('.', ',');
@@ -589,7 +922,7 @@
 
         quantityInput.addEventListener('input', updatePrice);
 
-        // Rotation 3D
+        // Fonctions de rotation 3D avec la souris
         function updatePlateRotation() {
             product3d.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
         }
@@ -598,6 +931,7 @@
             const rect = product3dContainer.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
             spotlight.style.setProperty('--x', `${x}%`);
             spotlight.style.setProperty('--y', `${y}%`);
             spotlightSecondary.style.setProperty('--x', `${x - 10}%`);
@@ -612,7 +946,12 @@
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            const deltaMove = { x: e.clientX - previousMousePosition.x, y: e.clientY - previousMousePosition.y };
+            
+            const deltaMove = {
+                x: e.clientX - previousMousePosition.x,
+                y: e.clientY - previousMousePosition.y
+            };
+            
             rotationY += deltaMove.x * 0.5;
             rotationX -= deltaMove.y * 0.5;
             rotationX = Math.max(-60, Math.min(60, rotationX));
@@ -633,7 +972,12 @@
 
         document.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
-            const deltaMove = { x: e.touches[0].clientX - previousMousePosition.x, y: e.touches[0].clientY - previousMousePosition.y };
+            
+            const deltaMove = {
+                x: e.touches[0].clientX - previousMousePosition.x,
+                y: e.touches[0].clientY - previousMousePosition.y
+            };
+            
             rotationY += deltaMove.x * 0.5;
             rotationX -= deltaMove.y * 0.5;
             rotationX = Math.max(-60, Math.min(60, rotationX));
@@ -677,7 +1021,6 @@
 
                 const result = await paymentRequest.canMakePayment();
                 if (result && result.applePay) {
-                    // Créer une intention de paiement
                     const response = await fetch('https://ton-serveur.com/create-payment-intent', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -716,7 +1059,6 @@
             const totalPrice = (quantity * BASE_PRICE).toFixed(2);
 
             try {
-                // Créer une intention de paiement
                 const response = await fetch('https://ton-serveur.com/create-payment-intent', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -730,19 +1072,25 @@
                 if (!response.ok) throw new Error('Erreur serveur');
                 const { clientSecret } = await response.json();
 
-                // Initialiser Stripe Elements
                 const elements = stripe.elements();
                 const cardElement = elements.create('card', {
-                    hidePostalCode: true
+                    hidePostalCode: true,
+                    style: {
+                        base: {
+                            color: '#fff',
+                            backgroundColor: '#222',
+                            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                            fontSize: '16px',
+                            '::placeholder': { color: '#666' }
+                        }
+                    }
                 });
                 cardElement.mount('#card-element');
 
                 const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
                     payment_method: {
                         card: cardElement,
-                        billing_details: {
-                            name: 'Client SEED'
-                        }
+                        billing_details: { name: 'Client SEED' }
                     }
                 });
 
@@ -766,7 +1114,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CC-Api-Key': 'TA_CLÉ_API_COINBASE_COMMERCE', // Remplacer par ta clé API
+                        'X-CC-Api-Key': 'TA_CLÉ_API_COINBASE_COMMERCE',
                         'X-CC-Version': '2018-03-22'
                     },
                     body: JSON.stringify({
@@ -777,9 +1125,7 @@
                             currency: 'EUR'
                         },
                         pricing_type: 'fixed_price',
-                        metadata: {
-                            quantity: quantity
-                        },
+                        metadata: { quantity: quantity },
                         redirect_url: window.location.href + '?status=success',
                         cancel_url: window.location.href + '?status=cancel'
                     })
@@ -827,7 +1173,7 @@
             },
             onApprove: function(data, actions) {
                 return actions.order.capture().then(function(details) {
-                    alert('Paiement PayPal réussi !');
+                    alert('Paiement PayPal réussi pour ' + details.payer.name.given_name);
                 });
             },
             onError: function(err) {
@@ -842,3 +1188,4 @@
     </script>
 </body>
 </html>
+
