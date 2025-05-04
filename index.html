@@ -1004,7 +1004,7 @@
 
  const result = await paymentRequest.canMakePayment();
  if (result && result.applePay) {
- const response = await fetch('https://seed-stripe-backend-bnb1nnsjf-zerobaps-projects.vercel.app/create-payment-intent', {
+ const response = await fetch('https://seed-stripe-backend-7l4s9vo6s-zerobaps-projects.vercel.app/create-payment-intent', {
  method: 'POST',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify({
