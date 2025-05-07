@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEED. | Confirmation de Commande</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 10px;
+        }
+        
+        .title {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .content {
+            padding: 20px 0;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #000;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        table th {
+            background-color: #f5f5f5;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .tracking {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 15px 0;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #777;
+            text-align: center;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: #000;
+            color: #fff;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">SEED.</div>
+            <div class="title">Confirmation de Commande</div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <p>Bonjour {{CLIENT_NAME}},</p>
+                <p>Nous vous remercions pour votre commande. Votre achat a été confirmé et est en cours de traitement.</p>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">Détails de la commande</div>
+                <p>Commande #{{ORDER_NUMBER}}</p>
+                <p>Date: {{ORDER_DATE}}</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th>Prix</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Plaque SEED en acier inoxydable</td>
+                            <td>{{QUANTITY}}</td>
+                            <td>{{ITEM_PRICE}}</td>
+                        </tr>
+                        <tr>
+                            <td>Frais de livraison</td>
+                            <td>-</td>
+                            <td>4,99 €</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="total">
+                    Total: {{ORDER_TOTAL}}
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">Adresse de livraison</div>
+                <p>
+                    {{SHIPPING_ADDRESS}}
+                </p>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">Suivi de commande</div>
+                <p>Vous pouvez suivre votre commande avec le numéro de suivi suivant:</p>
+                <div class="tracking">{{TRACKING_NUMBER}}</div>
+                <p>Statut actuel: <strong>En préparation</strong></p>
+                <p>Vous recevrez des notifications par email à chaque étape de la livraison.</p>
+                
+                <center>
+                    <a href="{{TRACKING_URL}}" class="button">Suivre ma commande</a>
+                </center>
+            </div>
+            
+            <div class="section">
+                <p>Nous vous remercions pour votre confiance.</p>
+                <p>L'équipe SEED.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2024 SEED. Tous droits réservés.</p>
+            <p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>
+        </div>
+    </div>
+</body>
+</html>
