@@ -516,6 +516,35 @@
             text-align: center;
         }
 
+        /* Payment method display */
+        .payment-method {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .payment-method-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .payment-method-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .payment-method-name {
+            display: flex;
+            align-items: center;
+        }
+
         /* Footer styles */
         footer {
             padding: 40px 0;
@@ -640,7 +669,7 @@
                             <span class="item-quantity" id="itemQuantity">1</span>
                             <span class="item-name">Plaque SEED en acier inoxydable</span>
                         </div>
-                        <div class="item-price" id="itemPrice">27,99 €</div>
+                        <div class="item-price" id="itemPrice">19,99 €</div>
                     </div>
                     
                     <div class="order-item">
@@ -650,9 +679,22 @@
                         <div class="item-price">4,99 €</div>
                     </div>
                     
+                    <div class="payment-method">
+                        <div class="payment-method-name">
+                            <span class="payment-method-icon" id="paymentMethodIcon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                                </svg>
+                            </span>
+                            <span id="paymentMethodName">Carte bancaire</span>
+                        </div>
+                        <div class="item-price" id="paymentMethodInfo">**** **** **** 4242</div>
+                    </div>
+                    
                     <div class="order-total">
                         <span>Total</span>
-                        <span id="orderTotal">32,98 €</span>
+                        <span id="orderTotal">24,98 €</span>
                     </div>
                 </div>
 
@@ -778,7 +820,7 @@
                                 <tr>
                                     <td>Plaque SEED en acier inoxydable</td>
                                     <td id="email-item-quantity">1</td>
-                                    <td id="email-item-price">27,99 €</td>
+                                    <td id="email-item-price">19,99 €</td>
                                 </tr>
                                 <tr>
                                     <td>Frais de livraison</td>
@@ -789,7 +831,7 @@
                         </table>
                         
                         <div class="email-total">
-                            Total: <span id="email-order-total">32,98 €</span>
+                            Total: <span id="email-order-total">24,98 €</span>
                         </div>
                     </div>
                     
@@ -876,8 +918,8 @@
                         <tr>
                             <td>Plaque SEED en acier inoxydable</td>
                             <td id="invoice-item-quantity">1</td>
-                            <td>27,99 €</td>
-                            <td id="invoice-item-total">27,99 €</td>
+                            <td>19,99 €</td>
+                            <td id="invoice-item-total">19,99 €</td>
                         </tr>
                         <tr>
                             <td>Frais de livraison</td>
@@ -887,14 +929,14 @@
                         </tr>
                         <tr class="total-row">
                             <td colspan="3" style="text-align: right;">Total</td>
-                            <td id="invoice-total">32,98 €</td>
+                            <td id="invoice-total">24,98 €</td>
                         </tr>
                     </tbody>
                 </table>
                 
                 <div style="margin-top: 30px;">
                     <p><strong>Méthode de paiement:</strong> <span id="invoice-payment-method">Carte bancaire</span></p>
-                    <p><strong>NuméNuméro de commande:</strong> <span id="invoice-order-number">SEED-12345</span></p>
+                    <p><strong>Numéro de commande:</strong> <span id="invoice-order-number">SEED-12345</span></p>
                 </div>
                 
                 <div class="invoice-footer">
@@ -912,18 +954,19 @@
             // Dans une implémentation réelle, vous récupéreriez ces informations depuis votre backend
             // ou depuis les paramètres d'URL après redirection depuis la page de paiement
             
-            // Simuler la récupération des données de commande
+            // Récupérer les données de commande depuis l'URL
             const urlParams = new URLSearchParams(window.location.search);
             const orderId = urlParams.get('order_id') || 'SEED-' + Math.floor(100000 + Math.random() * 900000);
             const quantity = urlParams.get('quantity') || 1;
             const email = urlParams.get('email') || 'client@example.com';
-            const paymentMethod = urlParams.get('payment_method') || 'Carte bancaire';
+            const paymentMethod = urlParams.get('payment_method') || 'card';
+            const total = urlParams.get('total') || '24.98';
             
             // Calculer le prix total en fonction de la quantité
-            const unitPrice = 27.99;
+            const unitPrice = 19.99;
             const shippingPrice = 4.99;
             const itemTotal = (unitPrice * quantity).toFixed(2);
-            const orderTotal = (parseFloat(itemTotal) + shippingPrice).toFixed(2);
+            const orderTotal = parseFloat(total).toFixed(2);
             
             // Mettre à jour les éléments de la page avec les données de la commande
             document.getElementById('orderNumber').textContent = orderId;
@@ -937,6 +980,9 @@
             document.getElementById('orderTotal').textContent = orderTotal.replace('.', ',') + ' €';
             document.getElementById('trackingNumber').textContent = 'SEED-TRACK-' + Math.floor(100000000 + Math.random() * 900000000);
             document.getElementById('customer-email').textContent = email;
+            
+            // Mettre à jour les informations de paiement
+            updatePaymentMethodDisplay(paymentMethod);
             
             // Mettre à jour les éléments de l'email avec les données de la commande
             document.getElementById('email-order-number').textContent = orderId;
@@ -960,7 +1006,7 @@
             document.getElementById('invoice-item-quantity').textContent = quantity;
             document.getElementById('invoice-item-total').textContent = itemTotal.replace('.', ',') + ' €';
             document.getElementById('invoice-total').textContent = orderTotal.replace('.', ',') + ' €';
-            document.getElementById('invoice-payment-method').textContent = paymentMethod;
+            document.getElementById('invoice-payment-method').textContent = getPaymentMethodName(paymentMethod);
             document.getElementById('invoice-order-number').textContent = orderId;
             
             // Gérer l'affichage de l'email
@@ -992,10 +1038,68 @@
                     document.getElementById('invoiceModal').style.display = 'none';
                 }
             });
-            
-            // Simuler l'envoi d'un email (dans une implémentation réelle, cela serait fait côté serveur)
-            console.log('Email de confirmation envoyé à ' + email);
         });
+
+        // Mettre à jour l'affichage de la méthode de paiement
+        function updatePaymentMethodDisplay(method) {
+            const iconElement = document.getElementById('paymentMethodIcon');
+            const nameElement = document.getElementById('paymentMethodName');
+            const infoElement = document.getElementById('paymentMethodInfo');
+            
+            let icon, name, info;
+            
+            switch(method) {
+                case 'apple-pay':
+                    icon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 19c-2.3 0-6.4-.2-8.1-1.7-1.4-1.2-1-3.1-1-3.8.1-1.4.5-3.4 3.1-3.7.8-.1 1.6.5 2.7 1.1 1.3.7 2.8 1.1 3.3 1.1.5 0 2-.4 3.3-1.1 1.1-.6 1.9-1.2 2.7-1.1 2.6.3 3 2.3 3.1 3.7 0 .7.4 2.6-1 3.8-1.7 1.5-5.8 1.7-8.1 1.7z"/>
+                        <path d="M12 4c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/>
+                    </svg>`;
+                    name = 'Apple Pay';
+                    info = 'Paiement validé';
+                    break;
+                case 'crypto':
+                    icon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M15 9.354a4 4 0 1 0 0 5.292"></path>
+                    </svg>`;
+                    name = 'Crypto via Coinbase';
+                    info = 'Transaction validée';
+                    break;
+                case 'paypal':
+                    icon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7.144 19.532l1.049-5.751c.11-.606.691-1.002 1.304-.948 2.155.19 6.043.223 8.213-3.729.498-.9.809-1.816.935-2.704.138-.998-.209-1.696-.729-2.095C16.285 3.118 13.395 3 12 3H5.999c-.64 0-1.18.32-1.365.829L1 19l6.144.532z"></path>
+                        <path d="M16.092 7.845c.571-.52.871-1.32.731-2.321-.129-.884-.372-1.604-.732-2.175"></path>
+                    </svg>`;
+                    name = 'PayPal';
+                    info = 'Paiement validé';
+                    break;
+                case 'card':
+                default:
+                    icon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                        <line x1="1" y1="10" x2="23" y2="10"></line>
+                    </svg>`;
+                    name = 'Carte bancaire';
+                    info = '**** **** **** 4242';
+                    break;
+            }
+            
+            iconElement.innerHTML = icon;
+            nameElement.textContent = name;
+            infoElement.textContent = info;
+        }
+
+        // Obtenir le nom de la méthode de paiement
+        function getPaymentMethodName(method) {
+            switch(method) {
+                case 'apple-pay': return 'Apple Pay';
+                case 'crypto': return 'Crypto via Coinbase';
+                case 'paypal': return 'PayPal';
+                case 'card':
+                default: return 'Carte bancaire';
+            }
+        }
     </script>
 </body>
 </html>
+
