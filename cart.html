@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEED. | Panier</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #000;
+            color: #fff;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header styles */
+        header {
+            padding: 40px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #222;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .logo a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .back-button {
+            background: none;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 10px 15px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Content styles */
+        main {
+            padding: 0 0 60px;
+            min-height: 70vh;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        /* Cart styles */
+        .cart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        @media (min-width: 992px) {
+            .cart-container {
+                flex-direction: row;
+            }
+
+            .cart-items {
+                flex: 2;
+            }
+
+            .cart-summary {
+                flex: 1;
+            }
+        }
+
+        .cart-items {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #222;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .item-price {
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        .item-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 1px solid #333;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background-color: #222;
+        }
+
+        .quantity-input {
+            width: 40px;
+            height: 30px;
+            border: none;
+            background: none;
+            color: #fff;
+            font-size: 0.9rem;
+            text-align: center;
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
+        }
+
+        .quantity-input:focus {
+            outline: none;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #ff5252;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .remove-btn:hover {
+            opacity: 1;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 0;
+            color: #888;
+        }
+
+        .empty-cart p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .shop-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .shop-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Cart summary styles */
+        .cart-summary {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #222;
+            position: sticky;
+            top: 30px;
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .summary-row.total {
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding-top: 15px;
+            margin-top: 15px;
+            border-top: 1px solid #333;
+        }
+
+        .checkout-button {
+            width: 100%;
+            padding: 16px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .checkout-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .checkout-button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        /* Custom engraving section */
+        .custom-engraving {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #222;
+            margin-top: 30px;
+        }
+
+        .engraving-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .engraving-description {
+            font-size: 0.95rem;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .engraving-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .engraving-input-container {
+            margin-bottom: 20px;
+        }
+
+        .engraving-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .engraving-input {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            margin-bottom: 5px;
+        }
+
+        .engraving-input:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .engraving-limit {
+            font-size: 0.8rem;
+            color: #888;
+            text-align: right;
+        }
+
+        .engraving-preview {
+            background-color: #111;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .preview-title {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .preview-plate {
+            width: 200px;
+            height: 120px;
+            background: linear-gradient(135deg, 
+                rgba(90, 90, 90, 0.9), 
+                rgba(130, 130, 130, 1), 
+                rgba(110, 110, 110, 0.95));
+            margin: 0 auto;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .preview-plate::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.05),
+                rgba(255, 255, 255, 0.1) 1px,
+                rgba(255, 255, 255, 0.05) 1px,
+                rgba(255, 255, 255, 0.07) 2px
+            );
+            opacity: 0.8;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .preview-text {
+            font-family: monospace;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #222;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .engraving-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #fff;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+            background-color: #000;
+        }
+
+        .toggle-label {
+            font-size: 0.95rem;
+        }
+
+        /* Footer styles */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid #222;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .cart-item {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .item-actions {
+                justify-content: space-between;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="logo"><a href="index.html">SEED.</a></h1>
+            <a href="index.html" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Continuer mes achats
+            </a>
+        </header>
+
+        <main>
+            <h1 class="page-title">Votre Panier</h1>
+            
+            <div class="cart-container" id="cartContainer">
+                <!-- Cart items will be loaded here -->
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="copyright">© 2024 SEED. Tous droits réservés.</div>
+                <div class="footer-links">
+                    <a href="index.html" class="footer-link">Accueil</a>
+                    <a href="confidentialite.html" class="footer-link">Confidentialité</a>
+                    <a href="conditions.html" class="footer-link">Conditions</a>
+                    <a href="contact.html" class="footer-link">Contact</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Récupérer le panier depuis localStorage
+        let cart = JSON.parse(localStorage.getItem('seedCart')) || [];
+        let customEngraving = {
+            enabled: false,
+            text: '',
+            price: 9.99
+        };
+
+        // Charger le contenu du panier
+        function loadCart() {
+            const cartContainer = document.getElementById('cartContainer');
+            
+            if (cart.length === 0) {
+                // Panier vide
+                cartContainer.innerHTML = `
+                    <div class="cart-items">
+                        <div class="empty-cart">
+                            <p>Votre panier est vide</p>
+                            <a href="index.html" class="shop-button">Découvrir nos produits</a>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Calculer les totaux
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const shipping = 4.99;
+            const engravingCost = customEngraving.enabled ? customEngraving.price : 0;
+            const total = subtotal + shipping + engravingCost;
+
+            // Générer le HTML pour les articles du panier
+            let cartItemsHTML = '';
+            cart.forEach(item => {
+                cartItemsHTML += `
+                    <div class="cart-item" data-id="${item.id}">
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">${(item.price * item.quantity).toFixed(2).replace('.', ',')} €</div>
+                        </div>
+                        <div class="item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn decrease-btn" data-id="${item.id}">-</button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" min="1" max="10" data-id="${item.id}">
+                                <button class="quantity-btn increase-btn" data-id="${item.id}">+</button>
+                            </div>
+                            <button class="remove-btn" data-id="${item.id}">Supprimer</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Générer le HTML pour le résumé du panier
+            const cartHTML = `
+                <div class="cart-items">
+                    ${cartItemsHTML}
+                </div>
+                <div class="cart-summary">
+                    <h2 class="summary-title">Résumé de la commande</h2>
+                    <div class="summary-row">
+                        <span>Sous-total</span>
+                        <span>${subtotal.toFixed(2).replace('.', ',')} €</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Frais de livraison</span>
+                        <span>${shipping.toFixed(2).replace('.', ',')} €</span>
+                    </div>
+                    ${customEngraving.enabled ? `
+                    <div class="summary-row">
+                        <span>Gravure personnalisée</span>
+                        <span>${customEngraving.price.toFixed(2).replace('.', ',')} €</span>
+                    </div>
+                    ` : ''}
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span>${total.toFixed(2).replace('.', ',')} €</span>
+                    </div>
+                    <button class="checkout-button" id="checkoutButton">Procéder au paiement</button>
+
+                    <!-- Custom engraving section -->
+                    <div class="custom-engraving">
+                        <h3 class="engraving-title">Gravure personnalisée</h3>
+                        <p class="engraving-description">Ajoutez une gravure laser personnalisée au dos de votre plaque.</p>
+                        <p class="engraving-price">+ 9,99 €</p>
+                        
+                        <div class="engraving-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="engravingToggle" ${customEngraving.enabled ? 'checked' : ''}>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="toggle-label">Ajouter une gravure personnalisée</span>
+                        </div>
+                        
+                        <div id="engravingOptions" style="${customEngraving.enabled ? '' : 'display: none;'}">
+                            <div class="engraving-input-container">
+                                <label for="engravingText" class="engraving-label">Texte à graver (8 caractères max)</label>
+                                <input type="text" id="engravingText" class="engraving-input" maxlength="8" value="${customEngraving.text}" placeholder="Ex: BTC2024">
+                                <div class="engraving-limit"><span id="charCount">0</span>/8 caractères</div>
+                            </div>
+                            
+                            <div class="engraving-preview">
+                                <div class="preview-title">Aperçu de la gravure</div>
+                                <div class="preview-plate">
+                                    <div class="preview-text" id="previewText">${customEngraving.text || 'SEED.'}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            cartContainer.innerHTML = cartHTML;
+
+            // Ajouter les écouteurs d'événements
+            setupEventListeners();
+        }
+
+        // Configurer les écouteurs d'événements
+        function setupEventListeners() {
+            // Boutons d'augmentation de quantité
+            document.querySelectorAll('.increase-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const id = parseInt(button.getAttribute('data-id'));
+                    updateItemQuantity(id, 1);
+                });
+            });
+
+            // Boutons de diminution de quantité
+            document.querySelectorAll('.decrease-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const id = parseInt(button.getAttribute('data-id'));
+                    updateItemQuantity(id, -1);
+                });
+            });
+
+            // Champs de saisie de quantité
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                input.addEventListener('change', () => {
+                    const id = parseInt(input.getAttribute('data-id'));
+                    const quantity = parseInt(input.value);
+                    if (quantity > 0 && quantity <= 10) {
+                        setItemQuantity(id, quantity);
+                    } else {
+                        loadCart(); // Recharger pour réinitialiser les valeurs invalides
+                    }
+                });
+            });
+
+            // Boutons de suppression
+            document.querySelectorAll('.remove-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const id = parseInt(button.getAttribute('data-id'));
+                    removeItem(id);
+                });
+            });
+
+            // Toggle de gravure personnalisée
+            const engravingToggle = document.getElementById('engravingToggle');
+            if (engravingToggle) {
+                engravingToggle.addEventListener('change', () => {
+                    customEngraving.enabled = engravingToggle.checked;
+                    document.getElementById('engravingOptions').style.display = customEngraving.enabled ? 'block' : 'none';
+                    loadCart(); // Recharger pour mettre à jour le total
+                });
+            }
+
+            // Champ de texte de gravure
+            const engravingText = document.getElementById('engravingText');
+            if (engravingText) {
+                engravingText.addEventListener('input', () => {
+                    const text = engravingText.value;
+                    customEngraving.text = text;
+                    document.getElementById('previewText').textContent = text || 'SEED.';
+                    document.getElementById('charCount').textContent = text.length;
+                });
+            }
+
+            // Bouton de paiement
+            const checkoutButton = document.getElementById('checkoutButton');
+            if (checkoutButton) {
+                checkoutButton.addEventListener('click', proceedToCheckout);
+            }
+        }
+
+        // Mettre à jour la quantité d'un article
+        function updateItemQuantity(id, change) {
+            const itemIndex = cart.findIndex(item => item.id === id);
+            if (itemIndex !== -1) {
+                const newQuantity = cart[itemIndex].quantity + change;
+                if (newQuantity > 0 && newQuantity <= 10) {
+                    cart[itemIndex].quantity = newQuantity;
+                    saveCart();
+                    loadCart();
+                }
+            }
+        }
+
+        // Définir la quantité d'un article
+        function setItemQuantity(id, quantity) {
+            const itemIndex = cart.findIndex(item => item.id === id);
+            if (itemIndex !== -1) {
+                cart[itemIndex].quantity = quantity;
+                saveCart();
+                loadCart();
+            }
+        }
+
+        // Supprimer un article
+        function removeItem(id) {
+            cart = cart.filter(item => item.id !== id);
+            saveCart();
+            loadCart();
+        }
+
+        // Sauvegarder le panier dans localStorage
+        function saveCart() {
+            localStorage.setItem('seedCart', JSON.stringify(cart));
+        }
+
+        // Procéder au paiement
+        function proceedToCheckout() {
+            // Calculer le total
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const shipping = 4.99;
+            const engravingCost = customEngraving.enabled ? customEngraving.price : 0;
+            const total = subtotal + shipping + engravingCost;
+
+            // Sauvegarder les informations de gravure si activées
+            if (customEngraving.enabled) {
+                localStorage.setItem('seedEngraving', JSON.stringify(customEngraving));
+            } else {
+                localStorage.removeItem('seedEngraving');
+            }
+
+            // Rediriger vers la page de confirmation (simulation)
+            const orderId = 'SEED-' + Math.floor(100000 + Math.random() * 900000);
+            const quantity = cart.reduce((total, item) => total + item.quantity, 0);
+            
+            // Vider le panier après la commande
+            cart = [];
+            saveCart();
+            
+            // Rediriger vers la page de confirmation
+            window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=client@example.com&payment_method=Carte%20bancaire&total=${total.toFixed(2)}`;
+        }
+
+        // Charger le panier au chargement de la page
+        document.addEventListener('DOMContentLoaded', loadCart);
+    </script>
+</body>
+</html>
