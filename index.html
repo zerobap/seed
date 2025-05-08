@@ -499,7 +499,7 @@ opacity: 0.4;
     transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     flex-direction: column;
-    height: 450px;
+    height: 400px;
 }
 
 .package-card:hover {
@@ -566,6 +566,7 @@ opacity: 0.4;
     cursor: pointer;
     transition: all 0.2s;
     text-align: center;
+    margin-top: auto;
 }
 
 .package-button:hover {
@@ -836,9 +837,8 @@ Cliquez et faites glisser pour faire pivoter
                 </div>
             </div>
             <div class="package-features">
-                <div class="package-feature">1 plaque en acier inoxydable</div>
+                <div class="package-feature">1 plaque SEED</div>
                 <div class="package-feature">1 stylo graveur de précision</div>
-                <div class="package-feature">Guide d'utilisation détaillé</div>
                 <div class="package-feature">Garantie à vie</div>
             </div>
             <button class="package-button" data-package="classique" data-price="19.99">Ajouter au panier</button>
@@ -854,11 +854,9 @@ Cliquez et faites glisser pour faire pivoter
                 </div>
             </div>
             <div class="package-features">
-                <div class="package-feature">2 plaques en acier inoxydable</div>
+                <div class="package-feature">2 plaques SEED</div>
                 <div class="package-feature">1 stylo graveur de précision</div>
-                <div class="package-feature">Guide d'utilisation détaillé</div>
                 <div class="package-feature">Garantie à vie</div>
-                <div class="package-feature">Stockage double pour plus de sécurité</div>
             </div>
             <button class="package-button" data-package="plus" data-price="29.99">Ajouter au panier</button>
         </div>
@@ -872,12 +870,9 @@ Cliquez et faites glisser pour faire pivoter
                 </div>
             </div>
             <div class="package-features">
-                <div class="package-feature">2 plaques en acier inoxydable</div>
+                <div class="package-feature">2 plaques SEED</div>
                 <div class="package-feature">Kit de poinçons alphabet complet</div>
-                <div class="package-feature">Guide d'utilisation détaillé</div>
                 <div class="package-feature">Garantie à vie</div>
-                <div class="package-feature">Stockage double pour plus de sécurité</div>
-                <div class="package-feature">Frappe permanente des mots</div>
             </div>
             <button class="package-button" data-package="premium" data-price="44.99">Ajouter au panier</button>
         </div>
@@ -978,7 +973,7 @@ rotationY += deltaMove.x * 0.5;
 rotationX -= deltaMove.y * 0.5;
 rotationX = Math.max(-60, Math.min(60, rotationX));
 updatePlateRotation();
-previousMousePosition = { x: e.touches[0].clientX, y: e.clientY };
+previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
 e.preventDefault();
 });
 
@@ -1043,5 +1038,4 @@ notification.classList.remove('show');
 </script>
 </body>
 </html>
-
 
