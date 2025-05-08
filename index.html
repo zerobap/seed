@@ -442,41 +442,29 @@ opacity: 0.4;
 .feature {
     flex: 1 1 200px;
     max-width: 220px;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.03);
-    padding: 25px;
-    border-radius: 12px;
-    border: 1px solid #222;
-    transition: transform 0.3s, background-color 0.3s;
-}
-
-.feature:hover {
-    transform: translateY(-5px);
-    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .feature-title {
     font-size: 1.2rem;
     font-weight: 600;
-    margin-bottom: 15px;
-    position: relative;
-    padding-bottom: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
 }
 
-.feature-title::after {
+.feature-title::before {
     content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 2px;
+    display: inline-block;
+    width: 6px;
+    height: 6px;
     background-color: #fff;
+    margin-right: 10px;
 }
 
 .feature-description {
     font-size: 0.95rem;
     opacity: 0.8;
+    padding-left: 16px;
 }
 
 /* Product packages styles */
@@ -990,7 +978,7 @@ rotationY += deltaMove.x * 0.5;
 rotationX -= deltaMove.y * 0.5;
 rotationX = Math.max(-60, Math.min(60, rotationX));
 updatePlateRotation();
-previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+previousMousePosition = { x: e.touches[0].clientX, y: e.clientY };
 e.preventDefault();
 });
 
@@ -1055,4 +1043,5 @@ notification.classList.remove('show');
 </script>
 </body>
 </html>
+
 
