@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEED. | À Propos de Nous</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #000;
+            color: #fff;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header styles */
+        header {
+            padding: 40px 0 20px;
+            border-bottom: 1px solid #222;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .logo a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* Content styles */
+        main {
+            padding: 0 0 60px;
+            min-height: 70vh;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .intro {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+
+        .content-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        .section-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        .section-content p {
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .team-member {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid #222;
+        }
+
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #333;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .member-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .member-role {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .member-bio {
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+
+        .values-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .value-item {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #222;
+        }
+
+        .value-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .value-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #fff;
+            margin-right: 10px;
+        }
+
+        .value-description {
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+
+        .quote {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: #fff;
+            text-align: center;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .quote::before,
+        .quote::after {
+            content: '"';
+            font-size: 3rem;
+            position: absolute;
+            opacity: 0.2;
+        }
+
+        .quote::before {
+            top: -20px;
+            left: 0;
+        }
+
+        .quote::after {
+            bottom: -40px;
+            right: 0;
+        }
+
+        /* Footer styles */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid #222;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .team-grid,
+            .values-list {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="logo"><a href="index.html">SEED.</a></h1>
+        </header>
+
+        <main>
+            <h1 class="page-title">À Propos de Nous</h1>
+            
+            <p class="intro">
+                SEED. est né d'une conviction simple : la sécurité de vos actifs numériques ne devrait jamais être compromise. Nous sommes des passionnés de cryptomonnaies qui avons créé la solution que nous aurions voulu avoir dès le début de notre aventure crypto.
+            </p>
+
+            <div class="content-section">
+                <h2 class="section-title">Notre Histoire</h2>
+                <div class="section-content">
+                    <p>
+                        Tout a commencé en 2017, lorsque l'un de nos fondateurs a perdu l'accès à son portefeuille Bitcoin suite à un incident domestique. Cette expérience douloureuse a mis en lumière un problème fondamental : les solutions de stockage de phrases secrètes étaient soit trop fragiles, soit trop complexes.
+                    </p>
+                    <p>
+                        Après des mois de recherche et de développement, nous avons créé <span class="highlight">SEED.</span> — une plaque en acier inoxydable de qualité militaire conçue spécifiquement pour protéger les phrases secrètes de cryptomonnaies contre tous les éléments : feu, eau, temps et même catastrophes naturelles.
+                    </p>
+                    <p>
+                        Notre équipe est composée d'utilisateurs de cryptomonnaies de longue date, d'ingénieurs en matériaux et de spécialistes en sécurité. Nous comprenons les défis uniques auxquels sont confrontés les détenteurs de crypto, car nous les vivons nous-mêmes au quotidien.
+                    </p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Notre Philosophie</h2>
+                <div class="section-content">
+                    <p>
+                        Chez SEED., nous croyons que la propriété de vos actifs numériques implique une responsabilité : celle de les protéger efficacement. Notre philosophie repose sur trois piliers fondamentaux :
+                    </p>
+                    
+                    <div class="values-list">
+                        <div class="value-item">
+                            <h3 class="value-title">Simplicité</h3>
+                            <p class="value-description">
+                                La sécurité ne devrait pas être compliquée. Nos produits sont conçus pour être intuitifs et faciles à utiliser, même pour les novices en cryptomonnaies.
+                            </p>
+                        </div>
+                        
+                        <div class="value-item">
+                            <h3 class="value-title">Durabilité</h3>
+                            <p class="value-description">
+                                Vos actifs numériques sont conçus pour durer. Votre solution de stockage devrait l'être aussi. Nos plaques sont fabriquées pour résister à l'épreuve du temps et des éléments.
+                            </p>
+                        </div>
+                        
+                        <div class="value-item">
+                            <h3 class="value-title">Souveraineté</h3>
+                            <p class="value-description">
+                                Nous croyons fermement au principe "Not your keys, not your coins". Notre mission est de vous donner les outils pour être véritablement souverain sur vos actifs.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote">
+                La révolution crypto n'est pas seulement technologique, elle est philosophique. Elle nous rappelle l'importance de la propriété et de la responsabilité personnelle.
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Notre Engagement</h2>
+                <div class="section-content">
+                    <p>
+                        Nous ne sommes pas simplement une entreprise qui vend des produits à la communauté crypto — nous faisons partie intégrante de cette communauté. Nous participons activement aux discussions sur la sécurité des actifs numériques, soutenons des projets open-source et contribuons à l'éducation sur les bonnes pratiques de sécurité.
+                    </p>
+                    <p>
+                        Chaque plaque SEED. que nous fabriquons est testée rigoureusement pour s'assurer qu'elle répond à nos standards élevés. Nous n'acceptons aucun compromis sur la qualité, car nous savons que la valeur de ce que vous protégez est inestimable.
+                    </p>
+                    <p>
+                        Notre engagement va au-delà du produit. Nous sommes là pour vous accompagner dans votre parcours crypto, en vous offrant des conseils, des ressources et un support réactif. Votre réussite est notre réussite.
+                    </p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">Rejoignez-Nous</h2>
+                <div class="section-content">
+                    <p>
+                        Que vous soyez un investisseur chevronné ou un nouveau venu dans l'univers des cryptomonnaies, SEED. est conçu pour vous. Nous vous invitons à découvrir comment nos solutions peuvent vous offrir la tranquillité d'esprit que vous méritez.
+                    </p>
+                    <p>
+                        Ensemble, construisons un avenir où la sécurité de vos actifs numériques n'est plus une source d'inquiétude, mais une certitude.
+                    </p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="copyright">© 2024 SEED. Tous droits réservés.</div>
+                <div class="footer-links">
+                    <a href="index.html" class="footer-link">Accueil</a>
+                    <a href="about.html" class="footer-link">À Propos</a>
+                    <a href="confidentialite.html" class="footer-link">Confidentialité</a>
+                    <a href="conditions.html" class="footer-link">Conditions</a>
+                    <a href="contact.html" class="footer-link">Contact</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
