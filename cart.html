@@ -838,8 +838,8 @@
                         </svg>
                     </div>
                     <div class="payment-details">
-                        <div class="payment-name">Payer en Crypto</div>
-                        <div class="payment-description">Bitcoin, Ethereum et autres cryptomonnaies</div>
+                        <div class="payment-name">Crypto</div>
+                        <div class="payment-description">Payez en crypto via Coinbase</div>
                     </div>
                 </div>
                 <div class="payment-option" data-method="paypal">
@@ -1370,6 +1370,40 @@
             loadCart();
             checkCoinbaseReturn();
         });
+
+        // Paiement Crypto avec Coinbase Commerce
+ async function handleCryptoPayment() {
+ const quantity = parseInt(quantityInput.value);
+ const totalPrice = (quantity * BASE_PRICE).toFixed(2);
+
+ try {
+ const response = await fetch('https://api.commerce.coinbase.com/charges', {
+ method: 'POST',
+ headers: {
+ 'Content-Type': 'application/json',
+ 'X-CC-Api-Key': '97d6c3e5-8c85-4905-b9f5-fb89a58a11cd',
+ 'X-CC-Version': '2018-03-22'
+ },
+ body: JSON.stringify({
+ name: 'SEED Plaque',
+ description: `Achat de ${quantity} plaque(s) SEED`,
+ local_price: {
+ amount: totalPrice,
+ currency: 'EUR'
+ },
+ pricing_type: 'fixed_price',
+ metadata: { quantity: quantity },
+ redirect_url: window.location.href + '?status=success',
+ cancel_url: window.location.href + '?status=cancel'
+ })
+ });
+ if (!response.ok) throw new Error('Erreur Coinbase Commerce');
+ const { data } = await response.json();
+ window.location.href = data.hosted_url;
+ } catch (err) {
+ alert('Erreur Crypto : ' + err.message);
+ }
+
     </script>
 </body>
 </html>
