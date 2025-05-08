@@ -702,10 +702,6 @@
                     <h3 class="shipping-title">Détails de livraison</h3>
                     
                     <div class="shipping-address" id="shippingAddress">
-                        Jean Dupont<br>
-                        123 Rue de la République<br>
-                        75001 Paris<br>
-                        France
                     </div>
                     
                     <div class="shipping-method">
@@ -1038,6 +1034,19 @@
                     document.getElementById('invoiceModal').style.display = 'none';
                 }
             });
+
+            // Récupérer et afficher l'adresse de livraison depuis les paramètres d'URL
+            const customerName = urlParams.get('name') || 'Jean Dupont';
+            const customerAddress = urlParams.get('address') || '123 Rue de la République, 75001 Paris, France';
+
+            document.getElementById('shippingAddress').innerHTML = customerName + '<br>' + customerAddress;
+            document.getElementById('email-shipping-address').innerHTML = customerName + '<br>' + customerAddress;
+            document.getElementById('invoice-shipping-address').innerHTML = customerName + '<br>' + customerAddress;
+            document.getElementById('invoice-billing-address').innerHTML = customerName + '<br>' + customerAddress;
+
+            // Mettre à jour l'email du client
+            const customerEmail = urlParams.get('email') || 'client@example.com';
+            document.getElementById('customer-email').textContent = customerEmail;
         });
 
         // Mettre à jour l'affichage de la méthode de paiement
