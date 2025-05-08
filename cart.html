@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SEED. | Panier</title>
+    <!-- SDK PayPal -->
+    <script src="https://www.paypal.com/sdk/js?client-id=Ae6SER7n-Ht6wlPvd1L8_X0LNWbVpC6BNefKcK22YOC3pkg6afzKMofEXrl5GozMVPZmAB7mMN8sd8s6&currency=EUR"></script>
+    <!-- SDK Coinbase Commerce -->
+    <script src="https://commerce.coinbase.com/v1/checkout.js"></script>
     <style>
         /* Reset and base styles */
         * {
@@ -733,6 +737,21 @@
             flex: 1;
         }
 
+        /* Payment method specific containers */
+        .payment-method-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .payment-method-container.active {
+            display: block;
+        }
+
+        /* PayPal button container */
+        #paypal-button-container {
+            margin-top: 20px;
+        }
+
         /* Responsive styles */
         @media (max-width: 768px) {
             .cart-item {
@@ -850,7 +869,7 @@
             </div>
 
             <!-- Credit Card Form -->
-            <div class="payment-form" id="cardForm">
+            <div class="payment-method-container" id="cardForm">
                 <div class="form-group">
                     <label for="cardNumber" class="form-label">Numéro de carte</label>
                     <input type="text" id="cardNumber" class="form-input" placeholder="1234 5678 9012 3456">
@@ -869,10 +888,28 @@
                         <input type="text" id="cardCvc" class="form-input" placeholder="123">
                     </div>
                 </div>
+                <div class="payment-action">
+                    <button class="pay-button" id="cardPayButton">Payer</button>
+                </div>
             </div>
 
-            <div class="payment-action">
-                <button class="pay-button" id="payButton" disabled>Payer</button>
+            <!-- PayPal Container -->
+            <div class="payment-method-container" id="paypalContainer">
+                <div id="paypal-button-container"></div>
+            </div>
+
+            <!-- Crypto Container -->
+            <div class="payment-method-container" id="cryptoContainer">
+                <div class="payment-action">
+                    <button class="pay-button" id="cryptoPayButton">Payer avec Crypto</button>
+                </div>
+            </div>
+
+            <!-- Apple Pay Container -->
+            <div class="payment-method-container" id="applePayContainer">
+                <div class="payment-action">
+                    <button class="pay-button" id="applePayButton">Payer avec Apple Pay</button>
+                </div>
             </div>
         </div>
     </div>
@@ -892,6 +929,7 @@
             price: 9.99
         };
         let selectedPaymentMethod = null;
+        let orderTotal = 0;
 
         // Charger le contenu du panier
         function loadCart() {
@@ -914,7 +952,7 @@
             const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
             const shipping = 4.99;
             const engravingCost = customEngraving.enabled ? customEngraving.price : 0;
-            const total = subtotal + shipping + engravingCost;
+            orderTotal = subtotal + shipping + engravingCost;
 
             // Générer le HTML pour les articles du panier
             let cartItemsHTML = '';
@@ -960,7 +998,7 @@
                     ` : ''}
                     <div class="summary-row total">
                         <span>Total</span>
-                        <span>${total.toFixed(2).replace('.', ',')} €</span>
+                        <span>${orderTotal.toFixed(2).replace('.', ',')} €</span>
                     </div>
                     <button class="checkout-button" id="checkoutButton">Procéder au paiement</button>
 
@@ -1111,21 +1149,28 @@
 
             // Configurer les options de paiement
             setupPaymentOptions();
+            
+            // Initialiser PayPal
+            initPayPal();
         }
 
         // Configurer les options de paiement
         function setupPaymentOptions() {
             const paymentOptions = document.querySelectorAll('.payment-option');
-            const payButton = document.getElementById('payButton');
             const closeModal = document.getElementById('closeModal');
             const cardForm = document.getElementById('cardForm');
+            const paypalContainer = document.getElementById('paypalContainer');
+            const cryptoContainer = document.getElementById('cryptoContainer');
+            const applePayContainer = document.getElementById('applePayContainer');
 
             // Fermer la modal
             closeModal.addEventListener('click', () => {
                 document.getElementById('paymentModal').classList.remove('active');
                 selectedPaymentMethod = null;
-                payButton.disabled = true;
                 cardForm.classList.remove('active');
+                paypalContainer.classList.remove('active');
+                cryptoContainer.classList.remove('active');
+                applePayContainer.classList.remove('active');
                 paymentOptions.forEach(option => option.classList.remove('selected'));
             });
 
@@ -1139,56 +1184,193 @@
                     option.classList.add('selected');
                     selectedPaymentMethod = option.getAttribute('data-method');
                     
-                    // Activer le bouton de paiement
-                    payButton.disabled = false;
+                    // Cacher tous les conteneurs de méthode de paiement
+                    cardForm.classList.remove('active');
+                    paypalContainer.classList.remove('active');
+                    cryptoContainer.classList.remove('active');
+                    applePayContainer.classList.remove('active');
                     
-                    // Afficher le formulaire de carte si nécessaire
+                    // Afficher le conteneur approprié
                     if (selectedPaymentMethod === 'card') {
                         cardForm.classList.add('active');
-                    } else {
-                        cardForm.classList.remove('active');
+                    } else if (selectedPaymentMethod === 'paypal') {
+                        paypalContainer.classList.add('active');
+                    } else if (selectedPaymentMethod === 'crypto') {
+                        cryptoContainer.classList.add('active');
+                    } else if (selectedPaymentMethod === 'apple-pay') {
+                        applePayContainer.classList.add('active');
                     }
                 });
             });
 
-            // Configurer le bouton de paiement
-            payButton.addEventListener('click', processPayment);
+            // Configurer le bouton de paiement par carte
+            const cardPayButton = document.getElementById('cardPayButton');
+            if (cardPayButton) {
+                cardPayButton.addEventListener('click', processCardPayment);
+            }
+
+            // Configurer le bouton de paiement crypto
+            const cryptoPayButton = document.getElementById('cryptoPayButton');
+            if (cryptoPayButton) {
+                cryptoPayButton.addEventListener('click', processCryptoPayment);
+            }
+
+            // Configurer le bouton Apple Pay
+            const applePayButton = document.getElementById('applePayButton');
+            if (applePayButton) {
+                applePayButton.addEventListener('click', processApplePayment);
+            }
         }
 
-        // Traiter le paiement
-        function processPayment() {
-            if (!selectedPaymentMethod) return;
+        // Initialiser PayPal
+        function initPayPal() {
+            if (window.paypal) {
+                paypal.Buttons({
+                    createOrder: function(data, actions) {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: orderTotal.toFixed(2)
+                                }
+                            }]
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            // Afficher l'overlay de traitement
+                            const processingOverlay = document.getElementById('processingOverlay');
+                            processingOverlay.classList.add('active');
+                            
+                            // Simuler le traitement du paiement
+                            setTimeout(() => {
+                                processingOverlay.classList.remove('active');
+                                document.getElementById('paymentModal').classList.remove('active');
+                                
+                                // Vider le panier après la commande
+                                cart = [];
+                                saveCart();
+                                
+                                // Rediriger vers la page de confirmation
+                                const orderId = 'SEED-' + Math.floor(100000 + Math.random() * 900000);
+                                const quantity = cart.reduce((total, item) => total + item.quantity, 0) || 1;
+                                window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=client@example.com&payment_method=paypal&total=${orderTotal.toFixed(2)}`;
+                            }, 2000);
+                        });
+                    }
+                }).render('#paypal-button-container');
+            }
+        }
 
+        // Traiter le paiement par carte
+        function processCardPayment() {
+            // Vérifier les champs du formulaire
+            const cardNumber = document.getElementById('cardNumber').value;
+            const cardName = document.getElementById('cardName').value;
+            const cardExpiry = document.getElementById('cardExpiry').value;
+            const cardCvc = document.getElementById('cardCvc').value;
+            
+            if (!cardNumber || !cardName || !cardExpiry || !cardCvc) {
+                alert('Veuillez remplir tous les champs du formulaire.');
+                return;
+            }
+            
             // Afficher l'overlay de traitement
             const processingOverlay = document.getElementById('processingOverlay');
             processingOverlay.classList.add('active');
-
+            
             // Simuler le traitement du paiement
             setTimeout(() => {
                 processingOverlay.classList.remove('active');
                 document.getElementById('paymentModal').classList.remove('active');
-                
-                // Calculer le total pour la redirection
-                const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-                const shipping = 4.99;
-                const engravingCost = customEngraving.enabled ? customEngraving.price : 0;
-                const total = subtotal + shipping + engravingCost;
-                
-                // Générer un ID de commande
-                const orderId = 'SEED-' + Math.floor(100000 + Math.random() * 900000);
-                const quantity = cart.reduce((total, item) => total + item.quantity, 0);
                 
                 // Vider le panier après la commande
                 cart = [];
                 saveCart();
                 
                 // Rediriger vers la page de confirmation
-                window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=client@example.com&payment_method=${selectedPaymentMethod}&total=${total.toFixed(2)}`;
+                const orderId = 'SEED-' + Math.floor(100000 + Math.random() * 900000);
+                const quantity = 1; // Puisque le panier est vidé, on utilise 1 comme valeur par défaut
+                window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=client@example.com&payment_method=card&total=${orderTotal.toFixed(2)}`;
             }, 2000);
         }
 
+        // Traiter le paiement crypto via Coinbase Commerce
+        function processCryptoPayment() {
+            // Utiliser l'API Coinbase Commerce pour créer une charge
+            // Dans un environnement réel, cela serait fait côté serveur pour des raisons de sécurité
+            
+            // Rediriger vers Coinbase Commerce
+            const coinbaseCommerceUrl = `https://commerce.coinbase.com/checkout/97d6c3e5-8c85-4905-b9f5-fb89a58a11cd`;
+            
+            // Sauvegarder les informations de commande dans localStorage pour la récupération après le paiement
+            localStorage.setItem('seedPendingOrder', JSON.stringify({
+                items: cart,
+                total: orderTotal,
+                engraving: customEngraving,
+                paymentMethod: 'crypto'
+            }));
+            
+            // Rediriger vers Coinbase Commerce
+            window.location.href = coinbaseCommerceUrl;
+        }
+
+        // Traiter le paiement Apple Pay
+        function processApplePayment() {
+            // Dans un environnement réel, nous utiliserions l'API Apple Pay
+            // Pour cette démo, nous simulons simplement le processus
+            
+            // Afficher l'overlay de traitement
+            const processingOverlay = document.getElementById('processingOverlay');
+            processingOverlay.classList.add('active');
+            
+            // Simuler le traitement du paiement
+            setTimeout(() => {
+                processingOverlay.classList.remove('active');
+                document.getElementById('paymentModal').classList.remove('active');
+                
+                // Vider le panier après la commande
+                cart = [];
+                saveCart();
+                
+                // Rediriger vers la page de confirmation
+                const orderId = 'SEED-' + Math.floor(100000 + Math.random() * 900000);
+                const quantity = 1; // Puisque le panier est vidé, on utilise 1 comme valeur par défaut
+                window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=client@example.com&payment_method=apple-pay&total=${orderTotal.toFixed(2)}`;
+            }, 2000);
+        }
+
+        // Vérifier si l'utilisateur revient d'un paiement Coinbase
+        function checkCoinbaseReturn() {
+            // Vérifier les paramètres d'URL pour voir si nous revenons d'un paiement Coinbase
+            const urlParams = new URLSearchParams(window.location.search);
+            const coinbaseSuccess = urlParams.get('coinbase_success');
+            
+            if (coinbaseSuccess === 'true') {
+                // Récupérer les informations de commande
+                const pendingOrder = JSON.parse(localStorage.getItem('seedPendingOrder') || '{}');
+                
+                if (pendingOrder.paymentMethod === 'crypto') {
+                    // Vider le panier
+                    cart = [];
+                    saveCart();
+                    
+                    // Supprimer les informations de commande en attente
+                    localStorage.removeItem('seedPendingOrder');
+                    
+                    // Rediriger vers la page de confirmation
+                    const orderId = 'SEED-' + Math.floor(100000 + Math.random() * 900000);
+                    const quantity = 1; // Valeur par défaut
+                    window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=client@example.com&payment_method=crypto&total=${pendingOrder.total.toFixed(2)}`;
+                }
+            }
+        }
+
         // Charger le panier au chargement de la page
-        document.addEventListener('DOMContentLoaded', loadCart);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCart();
+            checkCoinbaseReturn();
+        });
     </script>
 </body>
 </html>
+
