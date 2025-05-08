@@ -495,7 +495,7 @@
             opacity: 1;
         }
 
-        /* Payment Modal */
+        /* Modal styles */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -517,19 +517,21 @@
             visibility: visible;
         }
 
-        .payment-modal {
+        .modal-content {
             background-color: #111;
             border-radius: 12px;
             padding: 30px;
             width: 90%;
-            max-width: 500px;
+            max-width: 600px;
             border: 1px solid #333;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             transform: translateY(20px);
             transition: transform 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        .modal-overlay.active .payment-modal {
+        .modal-overlay.active .modal-content {
             transform: translateY(0);
         }
 
@@ -561,6 +563,84 @@
             opacity: 1;
         }
 
+        /* Shipping form styles */
+        .shipping-form {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #222;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .form-input.error {
+            border-color: #ff5252;
+        }
+
+        .error-message {
+            color: #ff5252;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-actions {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .form-button {
+            padding: 14px 28px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            min-width: 200px;
+        }
+
+        .form-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Payment options styles */
         .payment-options {
             display: flex;
             flex-direction: column;
@@ -649,6 +729,26 @@
             transform: none;
         }
 
+        /* Payment method specific containers */
+        .payment-method-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .payment-method-container.active {
+            display: block;
+        }
+
+        /* Credit card form */
+        #cardForm {
+            margin-top: 20px;
+        }
+
+        /* PayPal button container */
+        #paypal-button-container {
+            margin-top: 20px;
+        }
+
         /* Processing overlay */
         .processing-overlay {
             position: fixed;
@@ -690,66 +790,6 @@
             font-size: 1.2rem;
             font-weight: 500;
             color: #fff;
-        }
-
-        /* Credit card form */
-        .payment-form {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .payment-form.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: #222;
-            border: 1px solid #333;
-            border-radius: 6px;
-            color: #fff;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #555;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        /* Payment method specific containers */
-        .payment-method-container {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .payment-method-container.active {
-            display: block;
-        }
-
-        /* PayPal button container */
-        #paypal-button-container {
-            margin-top: 20px;
         }
 
         /* Responsive styles */
@@ -810,12 +850,85 @@
         </footer>
     </div>
 
+    <!-- Shipping Information Modal -->
+    <div class="modal-overlay" id="shippingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Informations de livraison</h2>
+                <button class="close-modal" id="closeShippingModal">&times;</button>
+            </div>
+            <form id="shippingForm" class="shipping-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName" class="form-label">Prénom *</label>
+                        <input type="text" id="firstName" name="firstName" class="form-input" required>
+                        <div class="error-message" id="firstNameError">Veuillez entrer votre prénom</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Nom *</label>
+                        <input type="text" id="lastName" name="lastName" class="form-input" required>
+                        <div class="error-message" id="lastNameError">Veuillez entrer votre nom</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email *</label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                    <div class="error-message" id="emailError">Veuillez entrer une adresse email valide</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone" class="form-label">Téléphone *</label>
+                    <input type="tel" id="phone" name="phone" class="form-input" required>
+                    <div class="error-message" id="phoneError">Veuillez entrer un numéro de téléphone valide</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address" class="form-label">Adresse *</label>
+                    <input type="text" id="address" name="address" class="form-input" required>
+                    <div class="error-message" id="addressError">Veuillez entrer votre adresse</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="postalCode" class="form-label">Code postal *</label>
+                        <input type="text" id="postalCode" name="postalCode" class="form-input" required>
+                        <div class="error-message" id="postalCodeError">Veuillez entrer un code postal valide</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="city" class="form-label">Ville *</label>
+                        <input type="text" id="city" name="city" class="form-input" required>
+                        <div class="error-message" id="cityError">Veuillez entrer votre ville</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="country" class="form-label">Pays *</label>
+                    <select id="country" name="country" class="form-input" required>
+                        <option value="">Sélectionnez un pays</option>
+                        <option value="FR">France</option>
+                        <option value="BE">Belgique</option>
+                        <option value="CH">Suisse</option>
+                        <option value="LU">Luxembourg</option>
+                        <option value="CA">Canada</option>
+                        <option value="MC">Monaco</option>
+                    </select>
+                    <div class="error-message" id="countryError">Veuillez sélectionner un pays</div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="form-button">Continuer vers le paiement</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Payment Method Modal -->
     <div class="modal-overlay" id="paymentModal">
-        <div class="payment-modal">
+        <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">Choisir un moyen de paiement</h2>
-                <button class="close-modal" id="closeModal">&times;</button>
+                <button class="close-modal" id="closePaymentModal">&times;</button>
             </div>
             <div class="payment-options">
                 <div class="payment-option" data-method="apple-pay">
@@ -838,8 +951,8 @@
                         </svg>
                     </div>
                     <div class="payment-details">
-                        <div class="payment-name">Crypto</div>
-                        <div class="payment-description">Payez en crypto via Coinbase</div>
+                        <div class="payment-name">Crypto via Coinbase</div>
+                        <div class="payment-description">Bitcoin, Ethereum et autres cryptomonnaies</div>
                     </div>
                 </div>
                 <div class="payment-option" data-method="paypal">
@@ -930,6 +1043,7 @@
         };
         let selectedPaymentMethod = null;
         let orderTotal = 0;
+        let shippingInfo = {};
 
         // Charger le contenu du panier
         function loadCart() {
@@ -1019,7 +1133,7 @@
                         <div id="engravingOptions" style="${customEngraving.enabled ? '' : 'display: none;'}">
                             <div class="engraving-input-container">
                                 <label for="engravingText" class="engraving-label">Texte à graver (8 caractères max)</label>
-                                <input type="text" id="engravingText" class="engraving-input" maxlength="8" value="${customEngraving.text}" placeholder="Ex: BTC2024">
+                                <input type="text" id="engravingText" class="form-input" maxlength="8" value="${customEngraving.text}" placeholder="Ex: BTC2024">
                                 <div class="engraving-limit"><span id="charCount">0</span>/8 caractères</div>
                             </div>
                             
@@ -1103,7 +1217,7 @@
             // Bouton de paiement
             const checkoutButton = document.getElementById('checkoutButton');
             if (checkoutButton) {
-                checkoutButton.addEventListener('click', openPaymentModal);
+                checkoutButton.addEventListener('click', openShippingModal);
             }
         }
 
@@ -1142,6 +1256,144 @@
             localStorage.setItem('seedCart', JSON.stringify(cart));
         }
 
+        // Ouvrir la modal d'informations de livraison
+        function openShippingModal() {
+            const shippingModal = document.getElementById('shippingModal');
+            shippingModal.classList.add('active');
+            
+            // Configurer le formulaire de livraison
+            setupShippingForm();
+        }
+
+        // Configurer le formulaire de livraison
+        function setupShippingForm() {
+            const shippingForm = document.getElementById('shippingForm');
+            const closeShippingModal = document.getElementById('closeShippingModal');
+            
+            // Fermer la modal
+            closeShippingModal.addEventListener('click', () => {
+                document.getElementById('shippingModal').classList.remove('active');
+            });
+            
+            // Soumettre le formulaire
+            shippingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Valider le formulaire
+                if (validateShippingForm()) {
+                    // Collecter les informations de livraison
+                    shippingInfo = {
+                        firstName: document.getElementById('firstName').value,
+                        lastName: document.getElementById('lastName').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value,
+                        address: document.getElementById('address').value,
+                        postalCode: document.getElementById('postalCode').value,
+                        city: document.getElementById('city').value,
+                        country: document.getElementById('country').value
+                    };
+                    
+                    // Fermer la modal de livraison
+                    document.getElementById('shippingModal').classList.remove('active');
+                    
+                    // Ouvrir la modal de paiement
+                    openPaymentModal();
+                }
+            });
+        }
+
+        // Valider le formulaire de livraison
+        function validateShippingForm() {
+            let isValid = true;
+            
+            // Valider le prénom
+            const firstName = document.getElementById('firstName');
+            if (!firstName.value.trim()) {
+                showError(firstName, 'firstNameError');
+                isValid = false;
+            } else {
+                hideError(firstName, 'firstNameError');
+            }
+            
+            // Valider le nom
+            const lastName = document.getElementById('lastName');
+            if (!lastName.value.trim()) {
+                showError(lastName, 'lastNameError');
+                isValid = false;
+            } else {
+                hideError(lastName, 'lastNameError');
+            }
+            
+            // Valider l'email
+            const email = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email.value.trim() || !emailRegex.test(email.value)) {
+                showError(email, 'emailError');
+                isValid = false;
+            } else {
+                hideError(email, 'emailError');
+            }
+            
+            // Valider le téléphone
+            const phone = document.getElementById('phone');
+            if (!phone.value.trim()) {
+                showError(phone, 'phoneError');
+                isValid = false;
+            } else {
+                hideError(phone, 'phoneError');
+            }
+            
+            // Valider l'adresse
+            const address = document.getElementById('address');
+            if (!address.value.trim()) {
+                showError(address, 'addressError');
+                isValid = false;
+            } else {
+                hideError(address, 'addressError');
+            }
+            
+            // Valider le code postal
+            const postalCode = document.getElementById('postalCode');
+            if (!postalCode.value.trim()) {
+                showError(postalCode, 'postalCodeError');
+                isValid = false;
+            } else {
+                hideError(postalCode, 'postalCodeError');
+            }
+            
+            // Valider la ville
+            const city = document.getElementById('city');
+            if (!city.value.trim()) {
+                showError(city, 'cityError');
+                isValid = false;
+            } else {
+                hideError(city, 'cityError');
+            }
+            
+            // Valider le pays
+            const country = document.getElementById('country');
+            if (!country.value) {
+                showError(country, 'countryError');
+                isValid = false;
+            } else {
+                hideError(country, 'countryError');
+            }
+            
+            return isValid;
+        }
+
+        // Afficher une erreur
+        function showError(input, errorId) {
+            input.classList.add('error');
+            document.getElementById(errorId).classList.add('visible');
+        }
+
+        // Masquer une erreur
+        function hideError(input, errorId) {
+            input.classList.remove('error');
+            document.getElementById(errorId).classList.remove('visible');
+        }
+
         // Ouvrir la modal de paiement
         function openPaymentModal() {
             const paymentModal = document.getElementById('paymentModal');
@@ -1157,14 +1409,14 @@
         // Configurer les options de paiement
         function setupPaymentOptions() {
             const paymentOptions = document.querySelectorAll('.payment-option');
-            const closeModal = document.getElementById('closeModal');
+            const closePaymentModal = document.getElementById('closePaymentModal');
             const cardForm = document.getElementById('cardForm');
             const paypalContainer = document.getElementById('paypalContainer');
             const cryptoContainer = document.getElementById('cryptoContainer');
             const applePayContainer = document.getElementById('applePayContainer');
 
             // Fermer la modal
-            closeModal.addEventListener('click', () => {
+            closePaymentModal.addEventListener('click', () => {
                 document.getElementById('paymentModal').classList.remove('active');
                 selectedPaymentMethod = null;
                 cardForm.classList.remove('active');
@@ -1253,7 +1505,7 @@
                                 // Rediriger vers la page de confirmation
                                 const orderId = 'SEED-' + Math.floor(100000 + Math.random() * 900000);
                                 const quantity = cart.reduce((total, item) => total + item.quantity, 0) || 1;
-                                window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=client@example.com&payment_method=paypal&total=${orderTotal.toFixed(2)}`;
+                                window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=${shippingInfo.email}&payment_method=paypal&total=${orderTotal.toFixed(2)}&name=${encodeURIComponent(shippingInfo.firstName + ' ' + shippingInfo.lastName)}&address=${encodeURIComponent(shippingInfo.address + ', ' + shippingInfo.postalCode + ' ' + shippingInfo.city + ', ' + shippingInfo.country)}`;
                             }, 2000);
                         });
                     }
@@ -1284,33 +1536,29 @@
                 document.getElementById('paymentModal').classList.remove('active');
                 
                 // Vider le panier après la commande
+                const quantity = cart.reduce((total, item) => total + item.quantity, 0);
                 cart = [];
                 saveCart();
                 
                 // Rediriger vers la page de confirmation
                 const orderId = 'SEED-' + Math.floor(100000 + Math.random() * 900000);
-                const quantity = 1; // Puisque le panier est vidé, on utilise 1 comme valeur par défaut
-                window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=client@example.com&payment_method=card&total=${orderTotal.toFixed(2)}`;
+                window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=${shippingInfo.email}&payment_method=card&total=${orderTotal.toFixed(2)}&name=${encodeURIComponent(shippingInfo.firstName + ' ' + shippingInfo.lastName)}&address=${encodeURIComponent(shippingInfo.address + ', ' + shippingInfo.postalCode + ' ' + shippingInfo.city + ', ' + shippingInfo.country)}`;
             }, 2000);
         }
 
         // Traiter le paiement crypto via Coinbase Commerce
         function processCryptoPayment() {
-            // Utiliser l'API Coinbase Commerce pour créer une charge
-            // Dans un environnement réel, cela serait fait côté serveur pour des raisons de sécurité
-            
-            // Rediriger vers Coinbase Commerce
-            const coinbaseCommerceUrl = `https://commerce.coinbase.com/checkout/97d6c3e5-8c85-4905-b9f5-fb89a58a11cd`;
-            
             // Sauvegarder les informations de commande dans localStorage pour la récupération après le paiement
             localStorage.setItem('seedPendingOrder', JSON.stringify({
                 items: cart,
                 total: orderTotal,
                 engraving: customEngraving,
-                paymentMethod: 'crypto'
+                paymentMethod: 'crypto',
+                shipping: shippingInfo
             }));
             
             // Rediriger vers Coinbase Commerce
+            const coinbaseCommerceUrl = `https://commerce.coinbase.com/checkout/97d6c3e5-8c85-4905-b9f5-fb89a58a11cd`;
             window.location.href = coinbaseCommerceUrl;
         }
 
@@ -1329,13 +1577,13 @@
                 document.getElementById('paymentModal').classList.remove('active');
                 
                 // Vider le panier après la commande
+                const quantity = cart.reduce((total, item) => total + item.quantity, 0);
                 cart = [];
                 saveCart();
                 
                 // Rediriger vers la page de confirmation
                 const orderId = 'SEED-' + Math.floor(100000 + Math.random() * 900000);
-                const quantity = 1; // Puisque le panier est vidé, on utilise 1 comme valeur par défaut
-                window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=client@example.com&payment_method=apple-pay&total=${orderTotal.toFixed(2)}`;
+                window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=${shippingInfo.email}&payment_method=apple-pay&total=${orderTotal.toFixed(2)}&name=${encodeURIComponent(shippingInfo.firstName + ' ' + shippingInfo.lastName)}&address=${encodeURIComponent(shippingInfo.address + ', ' + shippingInfo.postalCode + ' ' + shippingInfo.city + ', ' + shippingInfo.country)}`;
             }, 2000);
         }
 
@@ -1354,13 +1602,16 @@
                     cart = [];
                     saveCart();
                     
+                    // Récupérer les informations de livraison
+                    const shippingData = pendingOrder.shipping || {};
+                    
                     // Supprimer les informations de commande en attente
                     localStorage.removeItem('seedPendingOrder');
                     
                     // Rediriger vers la page de confirmation
                     const orderId = 'SEED-' + Math.floor(100000 + Math.random() * 900000);
-                    const quantity = 1; // Valeur par défaut
-                    window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=client@example.com&payment_method=crypto&total=${pendingOrder.total.toFixed(2)}`;
+                    const quantity = pendingOrder.items ? pendingOrder.items.reduce((total, item) => total + item.quantity, 0) : 1;
+                    window.location.href = `confirmation.html?order_id=${orderId}&quantity=${quantity}&email=${shippingData.email || 'client@example.com'}&payment_method=crypto&total=${pendingOrder.total.toFixed(2)}&name=${encodeURIComponent(shippingData.firstName + ' ' + shippingData.lastName || 'Client')}&address=${encodeURIComponent(shippingData.address + ', ' + shippingData.postalCode + ' ' + shippingData.city + ', ' + shippingData.country || 'Adresse non spécifiée')}`;
                 }
             }
         }
@@ -1370,8 +1621,8 @@
             loadCart();
             checkCoinbaseReturn();
         });
-
     </script>
 </body>
 </html>
+
 
