@@ -129,220 +129,181 @@ align-items: center;
 justify-content: center;
 }
 
-/* Steel plate - Credit card dimensions */
+/* Steel plate - Credit card dimensions with 2mm thickness */
 .steel-plate {
-width: 256px; /* ~3x credit card width (85.60mm) */
-height: 162px; /* ~3x credit card height (53.98mm) */
-position: absolute;
-transform-style: preserve-3d;
-filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
+    width: 256px; /* ~3x credit card width (85.60mm) */
+    height: 162px; /* ~3x credit card height (53.98mm) */
+    position: absolute;
+    transform-style: preserve-3d;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
 }
 
 .plate-face {
-position: absolute;
-width: 100%;
-height: 100%;
-backface-visibility: hidden;
-border-radius: 8px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 8px;
 }
 
 /* Brushed stainless steel effect - darker and more elegant */
 .plate-front {
-transform: translateZ(1px);
-background: linear-gradient(135deg, 
-rgba(100, 100, 100, 0.9), 
-rgba(140, 140, 140, 1), 
-rgba(120, 120, 120, 0.95));
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 15px;
-color: #222;
-border: 1px solid rgba(180, 180, 180, 0.5);
-box-shadow: 
-0 0 15px rgba(0, 0, 0, 0.3),
-inset 0 0 10px rgba(0, 0, 0, 0.2);
-overflow: hidden;
+    transform: translateZ(1px);
+    background: linear-gradient(135deg, 
+    rgba(100, 100, 100, 0.9), 
+    rgba(140, 140, 140, 1), 
+    rgba(120, 120, 120, 0.95));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    color: #222;
+    border: 1px solid rgba(180, 180, 180, 0.5);
+    box-shadow: 
+    0 0 15px rgba(0, 0, 0, 0.3),
+    inset 0 0 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
 }
 
 /* Brushed metal texture - more pronounced */
 .plate-front::before {
-content: "";
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background: 
-repeating-linear-gradient(
-90deg,
-rgba(255, 255, 255, 0.05),
-rgba(255, 255, 255, 0.1) 1px,
-rgba(255, 255, 255, 0.05) 1px,
-rgba(255, 255, 255, 0.07) 2px
-);
-opacity: 0.8;
-z-index: 1;
-pointer-events: none;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+    repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.1) 1px,
+    rgba(255, 255, 255, 0.05) 1px,
+    rgba(255, 255, 255, 0.07) 2px
+    );
+    opacity: 0.8;
+    z-index: 1;
+    pointer-events: none;
 }
 
 /* Enhanced reflection effect */
 .plate-front::after {
-content: "";
-position: absolute;
-top: -100%;
-left: -100%;
-right: -100%;
-bottom: -100%;
-background: linear-gradient(
-135deg,
-rgba(255, 255, 255, 0) 0%,
-rgba(255, 255, 255, 0.05) 45%,
-rgba(255, 255, 255, 0.2) 50%,
-rgba(255, 255, 255, 0.05) 55%,
-rgba(255, 255, 255, 0) 100%
-);
-transform: rotate(45deg);
-animation: reflectionMove 10s infinite linear;
-z-index: 2;
-pointer-events: none;
-}
-
-@keyframes reflectionMove {
-0% { transform: rotate(45deg) translateY(-50%); }
-50% { transform: rotate(45deg) translateY(50%); }
-100% { transform: rotate(45deg) translateY(-50%); }
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    right: -100%;
+    bottom: -100%;
+    background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 45%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.05) 55%,
+    rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(45deg);
+    animation: reflectionMove 10s infinite linear;
+    z-index: 2;
+    pointer-events: none;
 }
 
 .plate-back {
-transform: translateZ(-1px) rotateY(180deg);
-background: linear-gradient(135deg, 
-rgba(90, 90, 90, 0.9), 
-rgba(130, 130, 130, 1), 
-rgba(110, 110, 110, 0.95));
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 15px;
-color: #222;
-border: 1px solid rgba(180, 180, 180, 0.5);
-box-shadow: 
-0 0 15px rgba(0, 0, 0, 0.3),
-inset 0 0 10px rgba(0, 0, 0, 0.2);
-overflow: hidden;
+    transform: translateZ(-1px) rotateY(180deg);
+    background: linear-gradient(135deg, 
+    rgba(90, 90, 90, 0.9), 
+    rgba(130, 130, 130, 1), 
+    rgba(110, 110, 110, 0.95));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    color: #222;
+    border: 1px solid rgba(180, 180, 180, 0.5);
+    box-shadow: 
+    0 0 15px rgba(0, 0, 0, 0.3),
+    inset 0 0 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
 }
 
-/* Brushed metal texture for back - more pronounced */
-.plate-back::before {
-content: "";
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background: 
-repeating-linear-gradient(
-90deg,
-rgba(255, 255, 255, 0.05),
-rgba(255, 255, 255, 0.1) 1px,
-rgba(255, 255, 255, 0.05) 1px,
-rgba(255, 255, 255, 0.07) 2px
-);
-opacity: 0.8;
-z-index: 1;
-pointer-events: none;
-}
-
-/* Enhanced reflection effect for back */
-.plate-back::after {
-content: "";
-position: absolute;
-top: -100%;
-left: -100%;
-right: -100%;
-bottom: -100%;
-background: linear-gradient(
-135deg,
-rgba(255, 255, 255, 0) 0%,
-rgba(255, 255, 255, 0.05) 45%,
-rgba(255, 255, 255, 0.2) 50%,
-rgba(255, 255, 255, 0.05) 55%,
-rgba(255, 255, 255, 0) 100%
-);
-transform: rotate(45deg);
-animation: reflectionMove 10s infinite linear;
-z-index: 2;
-pointer-events: none;
-}
-
+/* Plate edges for 2mm thickness */
 .plate-edge {
-position: absolute;
-background: #777;
-border: 1px solid #888;
+    position: absolute;
+    background: #777;
+    border: 1px solid #888;
 }
 
 .plate-top {
-width: 100%;
-height: 2px;
-top: -1px;
-transform: rotateX(90deg) translateZ(1px);
+    width: 100%;
+    height: 2px;
+    top: -1px;
+    transform: rotateX(90deg) translateZ(1px);
 }
 
 .plate-bottom {
-width: 100%;
-height: 2px;
-bottom: -1px;
-transform: rotateX(-90deg) translateZ(1px);
+    width: 100%;
+    height: 2px;
+    bottom: -1px;
+    transform: rotateX(-90deg) translateZ(1px);
 }
 
 .plate-left {
-width: 2px;
-height: 100%;
-left: -1px;
-transform: rotateY(-90deg) translateZ(1px);
+    width: 2px;
+    height: 100%;
+    left: -1px;
+    transform: rotateY(-90deg) translateZ(1px);
 }
 
 .plate-right {
-width: 2px;
-height: 100%;
-right: -1px;
-transform: rotateY(90deg) translateZ(1px);
+    width: 2px;
+    height: 100%;
+    right: -1px;
+    transform: rotateY(90deg) translateZ(1px);
 }
 
-/* Seed phrase grid - Two columns with enhanced visibility */
+/* Seed phrase grid - Improved visibility */
 .seed-grid {
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-gap: 8px;
-width: 90%;
-position: relative;
-z-index: 3;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 8px;
+    width: 90%;
+    height: 90%;
+    position: relative;
+    z-index: 3;
 }
 
 /* Numbered cells for seed words - more visible */
 .seed-cell {
-background: rgba(0, 0, 0, 0.15);
-border: 1px solid rgba(0, 0, 0, 0.4);
-border-radius: 3px;
-padding: 5px 5px 5px 20px;
-font-size: 10px;
-color: #222;
-position: relative;
-height: 20px;
-display: flex;
-align-items: center;
-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 3px;
+    padding: 5px 5px 5px 25px;
+    font-size: 10px;
+    color: #111;
+    position: relative;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 
 .seed-cell::before {
-content: attr(data-number);
-position: absolute;
-left: 5px;
-font-weight: bold;
-font-size: 9px;
-color: #000;
+    content: attr(data-number);
+    position: absolute;
+    left: 5px;
+    font-weight: bold;
+    font-size: 11px;
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.4);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* SEED logo for back - only element on back */
@@ -756,41 +717,41 @@ Panier
 <div class="product-3d-container" id="product3dContainer">
 <div class="product-3d" id="product3d">
 <div class="steel-plate" id="steelPlate">
-<div class="plate-face plate-front">
-<div class="seed-grid">
-<div class="seed-cell" data-number="1"></div>
-<div class="seed-cell" data-number="13"></div>
-<div class="seed-cell" data-number="2"></div>
-<div class="seed-cell" data-number="14"></div>
-<div class="seed-cell" data-number="3"></div>
-<div class="seed-cell" data-number="15"></div>
-<div class="seed-cell" data-number="4"></div>
-<div class="seed-cell" data-number="16"></div>
-<div class="seed-cell" data-number="5"></div>
-<div class="seed-cell" data-number="17"></div>
-<div class="seed-cell" data-number="6"></div>
-<div class="seed-cell" data-number="18"></div>
-<div class="seed-cell" data-number="7"></div>
-<div class="seed-cell" data-number="19"></div>
-<div class="seed-cell" data-number="8"></div>
-<div class="seed-cell" data-number="20"></div>
-<div class="seed-cell" data-number="9"></div>
-<div class="seed-cell" data-number="21"></div>
-<div class="seed-cell" data-number="10"></div>
-<div class="seed-cell" data-number="22"></div>
-<div class="seed-cell" data-number="11"></div>
-<div class="seed-cell" data-number="23"></div>
-<div class="seed-cell" data-number="12"></div>
-<div class="seed-cell" data-number="24"></div>
-</div>
-</div>
-<div class="plate-face plate-back">
-<div class="seed-logo-back">SEED.</div>
-</div>
-<div class="plate-edge plate-top"></div>
-<div class="plate-edge plate-bottom"></div>
-<div class="plate-edge plate-left"></div>
-<div class="plate-edge plate-right"></div>
+    <div class="plate-face plate-front">
+        <div class="seed-grid">
+            <div class="seed-cell" data-number="1"></div>
+            <div class="seed-cell" data-number="2"></div>
+            <div class="seed-cell" data-number="3"></div>
+            <div class="seed-cell" data-number="4"></div>
+            <div class="seed-cell" data-number="5"></div>
+            <div class="seed-cell" data-number="6"></div>
+            <div class="seed-cell" data-number="7"></div>
+            <div class="seed-cell" data-number="8"></div>
+            <div class="seed-cell" data-number="9"></div>
+            <div class="seed-cell" data-number="10"></div>
+            <div class="seed-cell" data-number="11"></div>
+            <div class="seed-cell" data-number="12"></div>
+            <div class="seed-cell" data-number="13"></div>
+            <div class="seed-cell" data-number="14"></div>
+            <div class="seed-cell" data-number="15"></div>
+            <div class="seed-cell" data-number="16"></div>
+            <div class="seed-cell" data-number="17"></div>
+            <div class="seed-cell" data-number="18"></div>
+            <div class="seed-cell" data-number="19"></div>
+            <div class="seed-cell" data-number="20"></div>
+            <div class="seed-cell" data-number="21"></div>
+            <div class="seed-cell" data-number="22"></div>
+            <div class="seed-cell" data-number="23"></div>
+            <div class="seed-cell" data-number="24"></div>
+        </div>
+    </div>
+    <div class="plate-face plate-back">
+        <div class="seed-logo-back">SEED.</div>
+    </div>
+    <div class="plate-edge plate-top"></div>
+    <div class="plate-edge plate-bottom"></div>
+    <div class="plate-edge plate-left"></div>
+    <div class="plate-edge plate-right"></div>
 </div>
 </div>
 <div class="spotlight" id="spotlight"></div>
@@ -835,7 +796,7 @@ Cliquez et faites glisser pour faire pivoter
         <!-- Classique Package -->
         <div class="package-card">
             <div class="package-header">
-                <h3 class="package-name">Classique</h3>
+                <h3 class="package-name">Offre Classique</h3>
                 <div class="package-price">
                     <span>19,99</span> <span class="price-currency">EUR</span>
                 </div>
@@ -852,7 +813,7 @@ Cliquez et faites glisser pour faire pivoter
         <div class="package-card featured">
             <div class="featured-badge">Populaire</div>
             <div class="package-header">
-                <h3 class="package-name">Plus</h3>
+                <h3 class="package-name">Offre Plus</h3>
                 <div class="package-price">
                     <span>29,99</span> <span class="price-currency">EUR</span>
                 </div>
@@ -868,7 +829,7 @@ Cliquez et faites glisser pour faire pivoter
         <!-- Premium Package -->
         <div class="package-card">
             <div class="package-header">
-                <h3 class="package-name">Premium</h3>
+                <h3 class="package-name">Offre Premium</h3>
                 <div class="package-price">
                     <span>44,99</span> <span class="price-currency">EUR</span>
                 </div>
@@ -912,10 +873,18 @@ const spotlight = document.getElementById('spotlight');
 const spotlightSecondary = document.getElementById('spotlightSecondary');
 
 // Variables pour la rotation 3D
-let isDragging = false;
-let previousMousePosition = { x: 0, y: 0 };
-let rotationX = 20;
+// Ajuster la rotation initiale pour mieux voir la plaque
+let rotationX = 15;
 let rotationY = 0;
+let rotationZ = 0;
+
+// Fonction améliorée pour la mise à jour de la rotation
+function updatePlateRotation() {
+    product3d.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg) rotateZ(${rotationZ}deg)`;
+}
+
+// Initialiser la rotation
+updatePlateRotation();
 
 // Fonctions de rotation 3D avec la souris
 function updatePlateRotation() {
@@ -1042,5 +1011,6 @@ notification.classList.remove('show');
 </script>
 </body>
 </html>
+
 
 
