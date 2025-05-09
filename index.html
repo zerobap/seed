@@ -122,7 +122,7 @@ width: 100%;
 height: 100%;
 position: relative;
 transform-style: preserve-3d;
-transform: rotateX(20deg) rotateY(0deg);
+transform: rotateX(15deg) rotateY(0deg);
 transition: transform 0.1s ease;
 display: flex;
 align-items: center;
@@ -131,8 +131,8 @@ justify-content: center;
 
 /* Steel plate - Credit card dimensions with 2mm thickness */
 .steel-plate {
-    width: 256px; /* ~3x credit card width (85.60mm) */
-    height: 162px; /* ~3x credit card height (53.98mm) */
+    width: 340px;
+    height: 190px;
     position: absolute;
     transform-style: preserve-3d;
     filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
@@ -146,27 +146,27 @@ justify-content: center;
     border-radius: 8px;
 }
 
-/* Brushed stainless steel effect - darker and more elegant */
+/* Brushed stainless steel effect - matching the reference image */
 .plate-front {
     transform: translateZ(1px);
     background: linear-gradient(135deg, 
-    rgba(100, 100, 100, 0.9), 
-    rgba(140, 140, 140, 1), 
-    rgba(120, 120, 120, 0.95));
+    rgba(180, 180, 180, 0.95), 
+    rgba(200, 200, 200, 1), 
+    rgba(180, 180, 180, 0.95));
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 15px;
+    padding: 5px;
     color: #222;
-    border: 1px solid rgba(180, 180, 180, 0.5);
+    border: 1px solid rgba(220, 220, 220, 0.5);
     box-shadow: 
     0 0 15px rgba(0, 0, 0, 0.3),
-    inset 0 0 10px rgba(0, 0, 0, 0.2);
+    inset 0 0 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
-/* Brushed metal texture - more pronounced */
+/* Brushed metal texture - horizontal lines like in the reference */
 .plate-front::before {
     content: "";
     position: absolute;
@@ -176,7 +176,7 @@ justify-content: center;
     bottom: 0;
     background: 
     repeating-linear-gradient(
-    90deg,
+    180deg,
     rgba(255, 255, 255, 0.05),
     rgba(255, 255, 255, 0.1) 1px,
     rgba(255, 255, 255, 0.05) 1px,
@@ -209,30 +209,36 @@ justify-content: center;
     pointer-events: none;
 }
 
+@keyframes reflectionMove {
+    0% { transform: rotate(45deg) translateY(-50%); }
+    50% { transform: rotate(45deg) translateY(50%); }
+    100% { transform: rotate(45deg) translateY(-50%); }
+}
+
 .plate-back {
     transform: translateZ(-1px) rotateY(180deg);
     background: linear-gradient(135deg, 
-    rgba(90, 90, 90, 0.9), 
-    rgba(130, 130, 130, 1), 
-    rgba(110, 110, 110, 0.95));
+    rgba(170, 170, 170, 0.95), 
+    rgba(190, 190, 190, 1), 
+    rgba(170, 170, 170, 0.95));
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 15px;
     color: #222;
-    border: 1px solid rgba(180, 180, 180, 0.5);
+    border: 1px solid rgba(220, 220, 220, 0.5);
     box-shadow: 
     0 0 15px rgba(0, 0, 0, 0.3),
-    inset 0 0 10px rgba(0, 0, 0, 0.2);
+    inset 0 0 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
 /* Plate edges for 2mm thickness */
 .plate-edge {
     position: absolute;
-    background: #777;
-    border: 1px solid #888;
+    background: #999;
+    border: 1px solid #aaa;
 }
 
 .plate-top {
@@ -263,47 +269,49 @@ justify-content: center;
     transform: rotateY(90deg) translateZ(1px);
 }
 
-/* Seed phrase grid - Improved visibility */
+/* Seed phrase grid - Matching the reference image with 3 columns of 8 rows */
 .seed-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(6, 1fr);
-    gap: 8px;
-    width: 90%;
-    height: 90%;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 2px 15px;
+    width: 100%;
+    height: 100%;
     position: relative;
     z-index: 3;
+    padding: 8px;
 }
 
-/* Numbered cells for seed words - more visible */
+/* Numbered cells with lines exactly like in the reference image */
 .seed-cell {
-    background: rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    border-radius: 3px;
-    padding: 5px 5px 5px 25px;
-    font-size: 10px;
-    color: #111;
     position: relative;
-    height: 20px;
     display: flex;
     align-items: center;
-    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+    padding-left: 18px;
+    font-size: 10px;
+    color: #111;
+    height: 16px;
+    border: none;
 }
 
 .seed-cell::before {
-    content: attr(data-number);
+    content: attr(data-number) ".";
     position: absolute;
-    left: 5px;
+    left: 0;
     font-weight: bold;
-    font-size: 11px;
+    font-size: 10px;
     color: #000;
-    background-color: rgba(255, 255, 255, 0.4);
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    opacity: 0.9;
+}
+
+.seed-cell::after {
+    content: "";
+    position: absolute;
+    left: 18px;
+    right: 2px;
+    bottom: 2px;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* SEED logo for back - only element on back */
@@ -672,18 +680,17 @@ font-size: 1.2rem;
     }
     
     .steel-plate {
-        width: 200px;
-        height: 126px;
+        width: 240px;
+        height: 150px;
     }
     
     .seed-cell {
-        font-size: 8px;
-        height: 16px;
-        padding: 4px 4px 4px 16px;
+        font-size: 9px;
+        height: 14px;
     }
     
     .seed-cell::before {
-        font-size: 7px;
+        font-size: 9px;
     }
     
     .footer-content {
@@ -873,12 +880,13 @@ const spotlight = document.getElementById('spotlight');
 const spotlightSecondary = document.getElementById('spotlightSecondary');
 
 // Variables pour la rotation 3D
-// Ajuster la rotation initiale pour mieux voir la plaque
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
 let rotationX = 15;
 let rotationY = 0;
 let rotationZ = 0;
 
-// Fonction améliorée pour la mise à jour de la rotation
+// Fonctions de rotation 3D avec la souris
 function updatePlateRotation() {
     product3d.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg) rotateZ(${rotationZ}deg)`;
 }
@@ -886,81 +894,83 @@ function updatePlateRotation() {
 // Initialiser la rotation
 updatePlateRotation();
 
-// Fonctions de rotation 3D avec la souris
-function updatePlateRotation() {
-product3d.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
-}
-
 product3dContainer.addEventListener('mousemove', (e) => {
-const rect = product3dContainer.getBoundingClientRect();
-const x = ((e.clientX - rect.left) / rect.width) * 100;
-const y = ((e.clientY - rect.top) / rect.height) * 100;
+    const rect = product3dContainer.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-spotlight.style.setProperty('--x', `${x}%`);
-spotlight.style.setProperty('--y', `${y}%`);
-spotlightSecondary.style.setProperty('--x', `${x - 10}%`);
-spotlightSecondary.style.setProperty('--y', `${y - 10}%`);
+    spotlight.style.setProperty('--x', `${x}%`);
+    spotlight.style.setProperty('--y', `${y}%`);
+    spotlightSecondary.style.setProperty('--x', `${x - 10}%`);
+    spotlightSecondary.style.setProperty('--y', `${y - 10}%`);
 });
 
 product3dContainer.addEventListener('mousedown', (e) => {
-isDragging = true;
-previousMousePosition = { x: e.clientX, y: e.clientY };
-product3dContainer.style.cursor = 'grabbing';
+    isDragging = true;
+    previousMousePosition = { x: e.clientX, y: e.clientY };
+    product3dContainer.style.cursor = 'grabbing';
 });
 
 document.addEventListener('mousemove', (e) => {
-if (!isDragging) return;
+    if (!isDragging) return;
 
-const deltaMove = {
-x: e.clientX - previousMousePosition.x,
-y: e.clientY - previousMousePosition.y
-};
+    const deltaMove = {
+        x: e.clientX - previousMousePosition.x,
+        y: e.clientY - previousMousePosition.y
+    };
 
-rotationY += deltaMove.x * 0.5;
-rotationX -= deltaMove.y * 0.5;
-rotationX = Math.max(-60, Math.min(60, rotationX));
-updatePlateRotation();
-previousMousePosition = { x: e.clientX, y: e.clientY };
+    rotationY += deltaMove.x * 0.5;
+    rotationX -= deltaMove.y * 0.5;
+
+    // Limiter la rotation pour une meilleure expérience
+    rotationX = Math.max(-60, Math.min(60, rotationX));
+
+    updatePlateRotation();
+    previousMousePosition = { x: e.clientX, y: e.clientY };
 });
 
 document.addEventListener('mouseup', () => {
-isDragging = false;
-product3dContainer.style.cursor = 'grab';
+    isDragging = false;
+    product3dContainer.style.cursor = 'grab';
 });
 
 product3dContainer.addEventListener('touchstart', (e) => {
-isDragging = true;
-previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-e.preventDefault();
+    isDragging = true;
+    previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    e.preventDefault();
 });
 
 document.addEventListener('touchmove', (e) => {
-if (!isDragging) return;
+    if (!isDragging) return;
 
-const deltaMove = {
-x: e.touches[0].clientX - previousMousePosition.x,
-y: e.touches[0].clientY - previousMousePosition.y
-};
+    const deltaMove = {
+        x: e.touches[0].clientX - previousMousePosition.x,
+        y: e.touches[0].clientY - previousMousePosition.y
+    };
 
-rotationY += deltaMove.x * 0.5;
-rotationX -= deltaMove.y * 0.5;
-rotationX = Math.max(-60, Math.min(60, rotationX));
-updatePlateRotation();
-previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-e.preventDefault();
+    rotationY += deltaMove.x * 0.5;
+    rotationX -= deltaMove.y * 0.5;
+
+    // Limiter la rotation pour une meilleure expérience
+    rotationX = Math.max(-60, Math.min(60, rotationX));
+
+    updatePlateRotation();
+    previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    e.preventDefault();
 });
 
 document.addEventListener('touchend', () => {
-isDragging = false;
+    isDragging = false;
 });
 
+// Rotation automatique lente pour montrer le produit
 let autoRotate = setInterval(() => {
-rotationY += 0.2;
-updatePlateRotation();
+    rotationY += 0.2;
+    updatePlateRotation();
 }, 30);
 
 product3dContainer.addEventListener('mouseenter', () => {
-clearInterval(autoRotate);
+    clearInterval(autoRotate);
 });
 
 // Gestion du panier
@@ -970,47 +980,48 @@ updateCartCount();
 // Ajouter au panier
 const packageButtons = document.querySelectorAll('.package-button');
 packageButtons.forEach(button => {
-button.addEventListener('click', () => {
-const packageName = button.getAttribute('data-package');
-const packagePrice = parseFloat(button.getAttribute('data-price'));
-const packageTitle = button.closest('.package-card').querySelector('.package-name').textContent;
+    button.addEventListener('click', () => {
+        const packageName = button.getAttribute('data-package');
+        const packagePrice = parseFloat(button.getAttribute('data-price'));
+        const packageTitle = button.closest('.package-card').querySelector('.package-name').textContent;
 
-// Ajouter au panier
-cart.push({
-id: Date.now(),
-name: packageTitle,
-package: packageName,
-price: packagePrice,
-quantity: 1
-});
+        // Ajouter au panier
+        cart.push({
+            id: Date.now(),
+            name: packageTitle,
+            package: packageName,
+            price: packagePrice,
+            quantity: 1
+        });
 
-// Sauvegarder dans localStorage
-localStorage.setItem('seedCart', JSON.stringify(cart));
+        // Sauvegarder dans localStorage
+        localStorage.setItem('seedCart', JSON.stringify(cart));
 
-// Mettre à jour le compteur du panier
-updateCartCount();
+        // Mettre à jour le compteur du panier
+        updateCartCount();
 
-// Afficher la notification
-showNotification();
-});
+        // Afficher la notification
+        showNotification();
+    });
 });
 
 function updateCartCount() {
-const cartCount = document.getElementById('cartCount');
-const count = cart.reduce((total, item) => total + item.quantity, 0);
-cartCount.textContent = count;
+    const cartCount = document.getElementById('cartCount');
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
+    cartCount.textContent = count;
 }
 
 function showNotification() {
-const notification = document.getElementById('notification');
-notification.classList.add('show');
-setTimeout(() => {
-notification.classList.remove('show');
-}, 3000);
+    const notification = document.getElementById('notification');
+    notification.classList.add('show');
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
 }
 </script>
 </body>
 </html>
+
 
 
 
